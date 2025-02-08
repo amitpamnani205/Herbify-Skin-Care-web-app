@@ -1,3 +1,6 @@
+const skinProfileModel = require("./models/skinProfile");
+
+
 let isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();
@@ -5,5 +8,17 @@ let isLoggedIn = (req, res, next) => {
     res.redirect("/login");
 }
 
+let isfollower = async(req,res,next) => {
+    let userId = req.user._id;
+    let user = await skinProfileModel.findOne({ userId: userId});
 
-module.exports = { isLoggedIn }
+    if(!user){
+        return next()
+    }
+    res.redirect("/routine");
+    
+    
+}
+
+
+module.exports = { isLoggedIn,isfollower }

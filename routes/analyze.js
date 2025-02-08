@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const analyzeController = require("../controller/analyze.js")
-const {isLoggedIn} = require("../middleware.js")
+const {isLoggedIn,isfollower} = require("../middleware.js")
 
 router
     .route("/analyze")
-    .get(isLoggedIn,analyzeController.renderQuestion)
-    .post(isLoggedIn,analyzeController.saveGenralAnalysis)
+    .get(isLoggedIn,isfollower,analyzeController.renderQuestion)
+    .post(isLoggedIn,isfollower,analyzeController.saveGenralAnalysis)
 
 router
     .route("/analyze/face")
-    .get(isLoggedIn,analyzeController.renderCamera)
-    .post(isLoggedIn,analyzeController.saveFaceAnalysis)
+    .get(isLoggedIn,isfollower,analyzeController.renderCamera)
+    .post(isLoggedIn,isfollower,analyzeController.saveFaceAnalysis)
 
 
 module.exports = router
