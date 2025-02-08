@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/analysis/scan.css">
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
+
+<style>
+
+</style>
+
+
+</head>
+<body>
+    <div class="container">
+
+        <div id="camera-section" class="section">
+            <div id="face-status" class="status-message">Initializing face detection...</div>
+            
+            <div id="camera-error" class="error-message"></div>
+            
+            <div class="camera-container">
+                <video id="video" playsinline autoplay muted></video>
+                <canvas id="canvas"></canvas>
+                <img id="photo" alt="Captured photo">
+                
+                <!-- <div id="lighting-status" class="status-indicator">
+                    Checking lighting conditions...
+                </div>
+                 -->
+                <div class="button-container">
+                    <button id="capture" class="btn btn-primary" disabled>Take Photo</button>
+                    <button id="analyze" class="btn btn-primary" disabled>Analyze Skin</button>
+                    <button id="retake" class="btn btn-secondary" style="display:none">Retake Photo</button>
+                </div>
+            </div>
+
+            <div class="video-container">
+                <video id="video" playsinline autoplay></video>
+                <canvas id="overlay" class="overlay"></canvas>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="result" class="section" style="display: none"></div>
+
+    <script src="/js/analysis/scan.js" ></script>
+
+</body>
+</html>

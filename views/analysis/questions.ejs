@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/analysis/question.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Herbify Skin Analyzer</h1>
+
+        <div id="questionnaire" class="section">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress" class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="question-counter">Question 1 of 5</span>
+                </div>
+            </div>
+
+            <form id="skinQuestions">
+                <div id="q1" class="question-container active">
+                    <div class="question-group">
+                        <label for="age">How old are you?</label>
+                        <select id="age" name="age" required>
+                            <option value="">Select your age range</option>
+                            <option value="teen">Under 20</option>
+                            <option value="young">20-30</option>
+                            <option value="mature">31-45</option>
+                            <option value="senior">46+</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="q2" class="question-container">
+                    <div class="question-group">
+                        <label for="skinFeel">How would you describe your skin at the end of the day?</label>
+                        <select id="skinFeel" name="skinFeel" required>
+                            <option value="">Choose the best match</option>
+                            <option value="dry">Feels tight and dry</option>
+                            <option value="oily">Looks shiny and feels oily</option>
+                            <option value="combination">Some areas are oily, some dry</option>
+                            <option value="normal">Feels comfortable, not too dry or oily</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="q3" class="question-container">
+                    <div class="question-group">
+                        <label for="breakouts">Do you get pimples or spots?</label>
+                        <select id="breakouts" name="breakouts" required>
+                            <option value="">Select an answer</option>
+                            <option value="never">Almost never</option>
+                            <option value="occasional">Sometimes</option>
+                            <option value="frequent">Often</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="q4" class="question-container">
+                    <div class="question-group">
+                        <label for="sensitivity">Does your skin easily become red or irritated?</label>
+                        <select id="sensitivity" name="sensitivity" required>
+                            <option value="">Choose the best match</option>
+                            <option value="not">Rarely or never</option>
+                            <option value="somewhat">Sometimes</option>
+                            <option value="very">Very easily</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="q5" class="question-container">
+                    <div class="question-group">
+                        <label for="concern">What bothers you most about your skin?</label>
+                        <select id="concern" name="concern" required>
+                            <option value="">Select your main concern</option>
+                            <option value="spots">Spots and pimples</option>
+                            <option value="aging">Fine lines and wrinkles</option>
+                            <option value="darkspots">Dark spots or uneven tone</option>
+                            <option value="redness">Redness</option>
+                            <option value="dryness">Dry or flaky skin</option>
+                            <option value="oiliness">Oily or shiny skin</option>
+                            <option value="none">My skin is generally fine</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button type="button" id="prevBtn" class="btn btn-secondary" style="display: none">Previous</button>
+                    <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="camera-section" class="section" style="display: none">
+            <div id="loading" class="loading">
+                <p>Initializing camera...</p>
+            </div>
+
+            <div id="camera-error" class="error-message"></div>
+
+            <div class="camera-container">
+                <video id="video" playsinline autoplay muted></video>
+                <canvas id="canvas"></canvas>
+                <img id="photo" alt="Captured photo">
+
+                <div id="lighting-status" class="status-indicator">
+                    Checking lighting conditions...
+                </div>
+
+                <div class="button-container">
+                    <button id="capture" class="btn btn-primary" disabled>Take Photo</button>
+                    <button id="analyze" class="btn btn-primary" disabled>Analyze Skin</button>
+                    <button id="retake" class="btn btn-secondary" style="display:none">Retake Photo</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="result" class="section" style="display: none"></div>
+    </div>
+
+
+    <script src="js/analysis/questions.js" ></script>
+</body>
+</html>

@@ -13,8 +13,9 @@ const {isLoggedIn} = require("./middleware.js")
 const userRouter = require("./routes/user.js");
 const flash = require("connect-flash");
 
+app.use(express.urlencoded({limit: '50mb', extended: true}));
+app.use(express.json({limit: '50mb'}));
 
-app.use(express.urlencoded( {extended: true}));
 app.use(express.static('public'));
 app.use(session({
     secret: "mysecretKey",
@@ -58,6 +59,33 @@ app.get("/", isLoggedIn, (req, res) => {
     res.send(`Welcome to your dashboard, ${req.user.username}!`);
 });
 
+app.get("/analyze",isLoggedIn,(req,res) => {
+    console.log(req.user);
+    // res.send("slin analysis");
+
+    res.render("analysis/questions.ejs")
+    
+});
+
+app.post('/analyze',isLoggedIn, (req, res) => {
+    const formData = req.body;
+    console.log('Received data:', formData);
+
+    res.json({
+        success: true,
+        data: formData
+    });
+});
+
+app.get("/analyze/face",isLoggedIn,(req,res) => {
+    res.render("analysis/scan.ejs")
+})
+
+app.post('/analyze/face', isLoggedIn, async (req, res) => {
+    const { imageData, analysisResults } = req.body;
+    console.log(imageData, analysisResults);
+
+});
 app.listen(port,()=>{
     console.log(`server listing on port ${port}`);
 });
