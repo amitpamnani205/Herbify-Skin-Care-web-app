@@ -70,7 +70,16 @@ app.get("/routine" ,isLoggedIn, async (req,res) => {
     res.send("routine")
 })
 
+app.get("/process", (req,res) => {
+    res.render("analysis/process.ejs")
+})
+
+app.get("/survey", (req,res) => {
+    res.render("analysis/survey.ejs")
+})
+
 
 app.listen(port,()=>{
     console.log(`server listing on port ${port}`);
 });
+

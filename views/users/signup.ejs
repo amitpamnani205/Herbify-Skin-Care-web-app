@@ -61,17 +61,7 @@
         </div>
     </div>
 
-    <script>
-        document.querySelector('.password-toggle').addEventListener('click', function() {
-            const passwordInput = document.querySelector('#password');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                this.textContent = '👁️';
-            } else {
-                passwordInput.type = 'password';
-                this.textContent = '👁️';
-            }
-        });
-    </script>
+    <script src="/js/pass-hideShow.js"></script>
+
 </body>
 </html>

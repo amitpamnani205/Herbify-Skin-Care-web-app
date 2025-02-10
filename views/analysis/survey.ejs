@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HERBIFY Survey</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: url('leaf-bg.jpg') center/cover fixed;
+            overflow-x: hidden;
+        }
+
+        .page-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Mobile menu button */
+        .menu-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: #4CAF50;
+            border: none;
+            padding: 10px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #d4e8d4;
+            padding: 20px;
+            transition: all 0.3s ease;
+           
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            font-family: "Marcellus", serif;
+  font-weight: 400;
+        }
+        a{
+            color: black;
+            text-decoration: none;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            cursor: pointer;
+            margin-bottom: 10px;
+         
+
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            min-height: 100vh;
+            border-right: 1px solid;
+            border-left: 1px solid;
+        }
+
+        .header {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .chat-area {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .message {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .bot-avatar {
+            width: 40px;
+            height: 40px;
+            background: #4CAF50;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            padding: 12px 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-btn:hover {
+            background: #e8f5e9;
+            transform: translateY(-2px);
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 373px;
+            background-color: #ffffff;
+            padding: 20px;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid;
+    padding-bottom: 25px;
+        }
+
+        .tag {
+            background: #e8f5e9;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .right-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -250px;
+                top: 0;
+                bottom: 0;
+                z-index: 999;
+                background: #ffffff;
+                border-right: 1px solid black;
+            }
+
+            .sidebar.active {
+                left: 0;
+                box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding-top: 70px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .message-content {
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 15px;
+            }
+
+            .header {
+                font-size: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    
+    <div class="page-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo">HERBIFY</div>
+            <a href="/survey"> <div class="nav-item">
+                <img src="/images/clipboard.png" alt="icon" style="width: 20px;">
+                Survey
+            </div> </a>
+            <a href="/survey"> <div class="nav-item">
+                <img src="/images/skincare.png" alt="icon" style="width: 20px;">
+                Skin Routine
+            </div> </a>
+            <a href="/survey"> <div class="nav-item">
+                <img src="/images/blogging.png" alt="icon" style="width: 20px;">
+                Blog
+            </div> </a>
+            <a href="/survey" > <div class="nav-item" style="border-top: 1px solid; border-radius: 0;">
+                <img src="/images/settings.png" alt="icon" style="width: 20px;">
+                Setting
+            </div> </a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">HERBIFY Survey</div>
+            <div class="chat-area" id="chatContainer"></div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <h2 style="margin-bottom: 20px;">CONVERSATION DETAILS</h2>
+            <div class="tags">
+                <span class="tag">HERBAL</span>
+                <span class="tag">NATURAL</span>
+                <span class="tag">REMEDIES</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle mobile menu
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(e.target) && 
+                !menuBtn.contains(e.target) && 
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        const questions = [
+            {
+                text: "WHAT'S YOUR AGE?",
+                options: ["UNDER 20", "20-30", "31-45", "46+"]
+            },
+            {
+                text: "HOW WOULD YOU DESCRIBE YOUR SKIN AT THE END OF THE DAY?",
+                options: [
+                    "SOME AREAS ARE OILY, SOME DRY",
+                    "LOOKS SHINY AND FEELS OILY",
+                    "FEELS COMFORTABLE, NOT TOO DRY OR OILY",
+                    "FEELS TIGHT AND DRY"
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        const chatContainer = document.getElementById('chatContainer');
+
+        function createBotMessage(text) {
+            const div = document.createElement('div');
+            div.className = 'message';
+            div.innerHTML = `
+                <div class="bot-avatar"></div>
+                <div class="message-content">${text}</div>
+            `;
+            return div;
+        }
+
+        function createUserMessage(text) {
+            const div = document.createElement('div');
+            div.className = 'user-message';
+            div.innerHTML = `
+                <div class="message-content">${text}</div>
+                <div class="user-avatar"></div>
+            `;
+            return div;
+        }
+
+        function createOptions(options) {
+            const div = document.createElement('div');
+            div.className = 'options-grid';
+            
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.onclick = () => handleAnswer(option);
+                div.appendChild(button);
+            });
+
+            return div;
+        }
+
+        function handleAnswer(answer) {
+            chatContainer.appendChild(createUserMessage(answer));
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                setTimeout(() => {
+                    askQuestion(questions[currentQuestion]);
+                }, 500);
+            }
+        }
+
+        function askQuestion(question) {
+            chatContainer.appendChild(createBotMessage(question.text));
+            chatContainer.appendChild(createOptions(question.options));
+        }
+
+        // Start the survey
+        askQuestion(questions[0]);
+    </script>
+</body>
+</html>

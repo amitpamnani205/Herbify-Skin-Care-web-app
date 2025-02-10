@@ -3,56 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Face Analysis</title>
     <link rel="stylesheet" href="/css/analysis/scan.css">
-    
-    
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
-
-<style>
-
-</style>
-
-
 </head>
 <body>
     <div class="container">
-
         <div id="camera-section" class="section">
             <div id="face-status" class="status-message">Initializing face detection...</div>
             
-            <div id="camera-error" class="error-message"></div>
-            
             <div class="camera-container">
-                <video id="video" playsinline autoplay muted></video>
-                <canvas id="canvas"></canvas>
-                <img id="photo" alt="Captured photo">
+               <div class="video-wrapper">
+                    <video id="video" playsinline autoplay muted></video>
+                    <div class="overlay-message" style="display: none;"></div>
+                    <div class="face-overlay">
+                        <svg viewBox="0 0 100 140" preserveAspectRatio="none">
+                            <defs>
+                                <!-- Face mesh pattern -->
+                                <pattern id="meshPattern" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+                                </pattern>
+                                
+                                <!-- Scanning line gradient -->
+                                <linearGradient id="scanGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:rgba(255,255,255,0)"/>
+                                    <stop offset="50%" style="stop-color:rgba(255,255,255,0.5)"/>
+                                    <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
+                                </linearGradient>
+                            </defs>
+                            
+                            <!-- Background with mesh -->
+                            <rect width="100" height="140" fill="url(#meshPattern)" class="mesh-pattern"/>
+                            
+                            <!-- Face outline -->
+                            <path d="M50 15
+                                     C 30 15, 15 30, 15 50
+                                     C 15 65, 20 75, 25 85
+                                     L 30 110
+                                     C 30 120, 70 120, 70 110
+                                     L 75 85
+                                     C 80 75, 85 65, 85 50
+                                     C 85 30, 70 15, 50 15
+                                     Z" 
+                                  fill="none" 
+                                  stroke="currentColor" 
+                                  stroke-width="2"
+                                  class="outline-path"/>
+                                  
+                            <!-- Scanning line -->
+                            <rect class="scan-line" x="0" y="0" width="100" height="2" fill="url(#scanGradient)">
+                                <animateTransform attributeName="transform"
+                                                type="translate"
+                                                from="0 0"
+                                                to="0 140"
+                                                dur="2s"
+                                                repeatCount="indefinite"/>
+                            </rect>
+                            
+                            <!-- Countdown number -->
+                            <text class="countdown-number" 
+                                  x="50" y="70" 
+                                  font-family="Arial, sans-serif" 
+                                  font-size="40" 
+                                  fill="white" 
+                                  text-anchor="middle" 
+                                  dominant-baseline="middle"></text>
+                        </svg>
+                    </div>
+                    <canvas id="canvas"></canvas>
+                    <img id="photo" alt="Captured photo">
+                </div>
                 
-                <!-- <div id="lighting-status" class="status-indicator">
-                    Checking lighting conditions...
-                </div>
-                 -->
                 <div class="button-container">
-                    <button id="capture" class="btn btn-primary" disabled>Take Photo</button>
-                    <button id="analyze" class="btn btn-primary" disabled>Analyze Skin</button>
-                    <button id="retake" class="btn btn-secondary" style="display:none">Retake Photo</button>
+                    <button id="capture" class="btn btn-primary" disabled style="visibility: hidden;">Take Photo</button>
+                    <button id="analyze" class="btn btn-primary" disabled style="visibility: hidden;">Analyze Skin</button>
+                    <button id="retake" class="btn btn-secondary" style="display:none"></button> Photo</button>
                 </div>
             </div>
-
-            <div class="video-container">
-                <video id="video" playsinline autoplay></video>
-                <canvas id="overlay" class="overlay"></canvas>
-            </div>
-
         </div>
+        <div id="result" class="section"></div>
     </div>
 
-    <div id="result" class="section" style="display: none"></div>
-
-    <script src="/js/analysis/scan.js" ></script>
-
+    <script src="/js/analysis/scan.js" type="text/javascript"></script>
 </body>
 </html>
