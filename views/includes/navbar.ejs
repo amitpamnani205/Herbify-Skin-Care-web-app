@@ -1,20 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Herbify</title>
-</head>
-<body>
-    <div class="navbar">
-        <div class="logo">
-            <h2>Herbify</h2>
-        </div>
-        <div class="menus">
-            <a href="/Home">Home</a>
-            <a href="/Home">Home</a>
+<div id="spinner"
+class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+<div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+    <span class="sr-only">Loading...</span>
+</div>
+</div>
 
-        </div>
+
+<div class="container-fluid sticky-top">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light p-0">
+            <a href="/" class="navbar-brand">
+                <h2 class="text-white" style="font-family: Marcellus; font-weight: 25;">HERBIFY</h2>
+            </a>
+            <button type="button" class="navbar-toggler ms-auto me-0" data-bs-toggle="collapse"
+                data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto">
+                    <a href="/" class="nav-item nav-link active">Home</a>
+                    <a href="/about" class="nav-item nav-link">About</a>
+                    <a href="/testimonial" class="nav-item nav-link">Testimonial</a>
+                    <a href="/blog" class="nav-item nav-link">Blog</a>
+
+                </div>
+                <a href="/login" class="btn btn-dark py-2 px-4 d-none d-lg-inline-block">Log In</a>
+                <a href="/signup" class="btn btn-dark py-2 px-4 d-none d-lg-inline-block">Sign Up</a>
+            </div>
+        </nav>
     </div>
-</body>
-</html>
+</div>
