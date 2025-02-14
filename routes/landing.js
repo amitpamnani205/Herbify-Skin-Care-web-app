@@ -18,9 +18,5 @@ router.
     route("/testimonial")
     .get(landingController.renderTestimonial)
 
-router
-    .route("*")
-    .get(landingController.render404)
-
 
 module.exports = router

@@ -1,6 +1,6 @@
 
-const skinProfileModel = require("../models/skinProfile.js");
 
+const FaceAnalysisModel = require("../models/faceAnalysis.js");
 
 
 const renderQuestion = ("/analyze",(req,res) => {
@@ -17,62 +17,67 @@ const renderCamera = ("/analyze/face",(req,res) => {
 });
 
 
-let skinProfile = {
-    genralAnalysis: {},
-    faceAnalysis: {},
-};
+// let skinProfile = {
+//     genralAnalysis: {},
+//     faceAnalysis: {},
+// };
 
-const saveGenralAnalysis = ('/analyze', (req, res) => {
-    const formData = req.body;
-    // console.log('Received data:', formData);
+// const saveGenralAnalysis = ('/analyze', (req, res) => {
+//     const formData = req.body;
+//     // console.log('Received data:', formData);
 
-    skinProfile.genralAnalysis = {
-        userId:req.user._id, 
-        age: formData.age, 
-        skinFeel: formData.skinFeel, 
-        breakouts: formData.breakouts, 
-        sensitivity: formData.sensitivity, 
-        concern: formData.concern
-    }
+//     skinProfile.genralAnalysis = {
+//         userId:req.user._id, 
+//         age: formData.age, 
+//         skinFeel: formData.skinFeel, 
+//         breakouts: formData.breakouts, 
+//         sensitivity: formData.sensitivity, 
+//         concern: formData.concern
+//     }
 
-    res.json({
-        success: true,
-        data: formData
-    });
-});
+//     res.json({
+//         success: true,
+//         data: formData
+//     });
+// });
 
 const saveFaceAnalysis = ('/analyze/face', async (req, res) => {
-    const { imageData, analysisResults } = req.body;
-    // console.log(imageData, analysisResults);
+    const { imageData,analysisResults } = req.body;
+    let userId = req.user._id;
+    console.log(analysisResults.brightness,req.user);
 
-    skinProfile.faceAnalysis = { 
+    let newFaceScan = new FaceAnalysisModel({
+        userId: userId,
+        brightness: analysisResults.brightness,
+        redness: analysisResults.redness,
+        texture: analysisResults.texture,
+        oiliness: analysisResults.texture,
+        isDone: true
+    })
+
+    // skinProfile.faceAnalysis = { 
        
-        brightness: analysisResults.brightness, 
-        redness: analysisResults.redness, 
-        texture: analysisResults.texture, 
-        oiliness: analysisResults.oiliness
-    }
+    //     brightness: analysisResults.brightness, 
+    //     redness: analysisResults.redness, 
+    //     texture: analysisResults.texture, 
+    //     oiliness: analysisResults.oiliness
+    // }
 
         // console.log(skinProfile);
 
-    let newSkinProfile = new skinProfileModel({
-        userId: skinProfile.genralAnalysis.userId,
-        age: skinProfile.genralAnalysis.age,
-        skinFeel: skinProfile.genralAnalysis.skinFeel,
-        breakouts: skinProfile.genralAnalysis.breakouts,
-        sensitivity: skinProfile.genralAnalysis.sensitivity,
-        concern: skinProfile.genralAnalysis.concern,
-        brightness: skinProfile.faceAnalysis.brightness,
-        redness: skinProfile.faceAnalysis.redness,
-        texture: skinProfile.faceAnalysis.texture,
-        oiliness: skinProfile.faceAnalysis.texture
-    });
+    // let newFaceScan = new skinProfileModel({
+    //     userId: skinProfile.genralAnalysis.userId,
+    //     brightness: skinProfile.faceAnalysis.brightness,
+    //     redness: skinProfile.faceAnalysis.redness,
+    //     texture: skinProfile.faceAnalysis.texture,
+    //     oiliness: skinProfile.faceAnalysis.texture
+    // });
 
-    console.log(newSkinProfile);
-    await newSkinProfile.save();
+    console.log(newFaceScan);
+    await newFaceScan.save();
 
 });
 
-module.exports = { renderQuestion, renderCamera,saveGenralAnalysis,saveFaceAnalysis }
+module.exports = { renderQuestion, renderCamera,saveFaceAnalysis }
 
 

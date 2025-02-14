@@ -1,0 +1,918 @@
+<!doctype html>
+
+<html
+  lang="en"
+  class="light-style layout-menu-fixed layout-compact"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../assets/"
+  data-template="vertical-menu-template-free"
+  data-style="light">
+  <head>
+   <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <title>Herbify</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <!-- <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" /> -->
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet" />
+
+    <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="../assets/css/demo.css" />
+
+    <!-- Vendors CSS -->
+    <!-- <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" /> -->
+
+    <!-- Page CSS -->
+    <!-- Page -->
+    <link rel="stylesheet" href="../assets/vendor/css/pages/page-auth.css" />
+
+    <!-- Helpers -->
+    <script src="../assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <!-- <script src="../assets/js/config.js"></script> -->
+    <style type="text/css">
+      .chat-container {
+/*            width: 100%;*/
+/*            max-width: 800px;*/
+/*            background: white;*/
+/*            border-radius: 20px;*/
+/*            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
+            overflow: scroll;
+            padding: 25px;
+            height: 35rem;
+        }
+
+      .message-content {
+     background-color: #E8F5E9;
+    padding: 15px 20px;
+    border-radius: 18px;
+    max-width: 70%;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .bot-avatar {
+ width: 30px;
+    height: 30px;
+    background-color: #69B578;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0;
+    margin-top: 6px;
+        }
+
+        .user-avatar {
+               width: 30px;
+    height: 30px;
+    background-color: #333;
+    border-radius: 50%;
+    margin-left: 12px;
+    flex-shrink: 0;
+    margin-top: 7px;
+        }
+
+        .message-content {
+            background-color: #E8F5E9;
+    padding: 15px 20px;
+    border-radius: 1px;
+    max-width: 70%;
+    font-size: 13px;
+    font-weight: 600;
+        }
+
+        .user-message {
+            flex-direction: row-reverse;
+        }
+
+        .user-message .message-content {
+            background-color: #E8F5E9;
+        }
+
+        .options-content {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 16px;
+}
+
+       .options-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+
+    width: 100%;
+}
+        .option-button {
+        padding: 7px 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    text-align: center;
+    color: #333;
+    font-weight: 600;
+}
+
+       .option-button:hover {
+    background-color: #E8F5E9;
+    border-color: #69B578;
+}
+
+
+
+.measurements-container {
+
+        }
+
+        .measurements-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .measurements-grid {
+            display: flex;
+            gap: 15px;
+            justify-content: start;
+        }
+
+        .measurements-card {
+            background: #fff;
+            padding: 12px 0;
+            border-radius: 8px;
+            width: 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .measurements-card.carbs {
+            background-color: #f8f9ff;
+        }
+
+        .measurements-card.fat {
+            background-color: #fdfdf5;
+        }
+
+        .measurements-card.protein {
+            background-color: #fff8f8;
+        }
+
+        .circle-progress {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 10px;
+            position: relative;
+        }
+
+        .circle-progress svg {
+            transform: rotate(-90deg);
+        }
+
+        .circle-background {
+            fill: none;
+            stroke: #eee;
+            stroke-width: 4;
+        }
+
+        .circle-progress-bar {
+            fill: none;
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .carbs .circle-progress-bar {
+            stroke: #6b7aff;
+        }
+
+        .fat .circle-progress-bar {
+            stroke: #95a94b;
+        }
+
+        .protein .circle-progress-bar {
+            stroke: #ff9b9b;
+        }
+
+        .measurements-value {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .measurements-label {
+            color: #666;
+            font-size: 10px;
+        }
+
+        .process-container{
+          margin: 30px;
+        }
+
+
+        .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.step-card {
+    border: 2px solid #90BC79;
+    border-radius: 8px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    background-color: #E8F5E9;
+}
+
+
+
+.step-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.step-title {
+    font-weight: 500;
+    color: #2D3748;
+}
+
+.tag {
+    background-color: #E6FFFA;
+    color: #319795;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.step-content {
+    color: #718096;
+}
+
+.step-content .line {
+    height: 8px;
+    background-color: #EDF2F7;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+
+.buttons {
+    display: flex;
+    gap: 16px;
+}
+
+.btn {
+    padding: 8px 24px;
+    border-radius: 6px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #90BC79;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #7da568;
+}
+.white-text{
+    
+}
+
+    </style>
+  </head>
+
+  <body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+          <div class="app-brand demo">
+            <a href="index.html" class="app-brand-link">
+              <span class="app-brand-text demo menu-text fw-bold ms-2">HERBIFY</span>
+            </a>
+
+            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+              <i class="bx bx-chevron-left bx-sm d-flex align-items-center justify-content-center"></i>
+            </a>
+          </div>
+
+          <div class="menu-inner-shadow"></div>
+
+          <ul class="menu-inner py-1">
+            <!-- Dashboards -->
+            <li class="menu-item active open">
+              <a href="javascript:void(0);" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-smile"></i>
+                <div class="text-truncate" data-i18n="Dashboards">Skin Survey</div>
+                <!-- <span class="badge rounded-pill bg-danger ms-auto">5</span> -->
+              </a>
+
+            </li>
+
+            <!-- Layouts -->
+            <li class="menu-item">
+              <a href="pages-account-settings-account.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div class="text-truncate" data-i18n="Layouts">Your Routine</div>
+              </a>
+
+
+            </li>
+
+            
+            <!-- Apps & Pages -->
+            <li class="menu-header small text-uppercase">
+              <span class="menu-header-text">Profile Settings</span>
+            </li>
+            
+            <!-- Pages -->
+            <li class="menu-item">
+              <a href="pages-account-settings-account.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <div class="text-truncate" data-i18n="Account">Account Settings</div>
+              </a>
+
+            </li>
+            
+
+            <!-- Components -->
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
+            <!-- Cards -->
+            <li class="menu-item">
+              <a href="cards-basic.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div class="text-truncate" data-i18n="Basic">Blogs</div>
+              </a>
+            </li>
+            <!-- User interface -->
+            
+
+            
+            <li class="menu-item">
+              <a
+                href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
+                target="_blank"
+                class="menu-link">
+                <i class="menu-icon tf-icons bx bx-support"></i>
+                <div class="text-truncate" data-i18n="Support">Support</div>
+              </a>
+            </li>
+
+          </ul>
+        </aside>
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
+
+          <nav
+            class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+            id="layout-navbar" style="background: white;">
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
+              <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
+                <i class="bx bx-menu bx-md"></i>
+              </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+
+            <b>Skin Survey</b>
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+                <!-- User -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <a
+                    class="nav-link dropdown-toggle hide-arrow p-0"
+                    href="javascript:void(0);"
+                    data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                     A
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <div class="d-flex">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-online">
+                              A
+                            </div>
+                          </div>
+                          <div class="flex-grow-1">
+                            <h6 class="mb-0">John Doe</h6>
+                            <small class="text-muted">Admin</small>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider my-1"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <i class="bx bx-user bx-md me-3"></i><span>My Profile</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#"> <i class="bx bx-cog bx-md me-3"></i><span>Settings</span> </a>
+                    </li>
+                    
+                    <li>
+                      <div class="dropdown-divider my-1"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0);">
+                        <i class="bx bx-power-off bx-md me-3"></i><span>Log Out</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!--/ User -->
+              </ul>
+            </div>
+          </nav>
+
+          <!-- / Navbar -->
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="row">
+                <div class="col-xxl-8 mb-6 order-0">
+                  <div class="card">
+<!-- 
+                    <div class="process-container">
+                      <div class="header">
+                          <h1>Skin Care Analysis Process</h1>
+                          <div class="subtitle">
+                              <div class="icon">✨</div>
+                              <span>Complete analysis in 2 simple steps</span>
+                          </div>
+                      </div>
+              
+                      <div class="steps-grid">
+              
+                         <div class="step-card">
+                              <div class="step-header">
+                                  <h3 class="step-title">Skin Type Analysis</h3>
+                                  <span class="tag">Step 1</span>
+                              </div>
+                              <div class="step-content">
+                                  <div class="line"></div>
+                                  <div class="line"></div>
+                                  <div class="line"></div>
+                              </div>
+                          </div>
+              
+                          <div class="step-card">
+                              <div class="step-header">
+                                  <h3 class="step-title">Questionnaire</h3>
+                                  <span class="tag">Step 2</span>
+                              </div>
+                              <div class="step-content">
+                                  <div class="line"></div>
+                                  <div class="line"></div>
+                                  <div class="line"></div>
+                              </div>
+                          </div>
+              
+                         
+              
+                      </div>
+              
+                      <div class="buttons">
+                         <a href="/analyze/face"><button class="btn btn-primary">Start Analysis</button></a> 
+                      </div>
+                  </div> -->
+
+                            <div class="chat-container">
+                            <div class="chat-messages" id="chatMessages">
+
+                            </div>
+                            </div>
+                  </div>
+                </div>
+               <div class="nav-align-top mb-6 col">
+                    <ul class="nav nav-pills mb-4" role="tablist">
+                      <li class="nav-item col" role="presentation">
+                        <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-home" aria-controls="navs-pills-top-home" aria-selected="true">
+                          Analysis
+                        </button>
+                      </li>
+                     
+    
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane fade show active" id="navs-pills-top-home" role="tabpanel">
+                        <div class="d-flex flex-column justify-content-center align-items-center" style="height: 28.6rem;">
+                          <!-- <img src="/assets/img/no_data.png" style="width: 300px; object-fit: contain; margin-bottom: 6rem;">
+                          No Data Avaible Please Complete Process -->
+
+
+
+
+
+                          <!-- when face scan complete analysis -->
+                          <div class="measurements-container">
+                            <div class="measurements-title">Skin Measurements</div>
+                            <div class="measurements-grid">
+                                <div class="measurements-card carbs">
+                                    <div class="circle-progress">
+                                        <svg width="50" height="50">
+                                            <circle class="circle-background" cx="25" cy="25" r="18"></circle>
+                                            <circle class="circle-progress-bar" cx="25" cy="25" r="18"></circle>
+                                        </svg>
+                                    </div>
+                                    <div class="measurements-value">45%</div>
+                                    <div class="measurements-label">Smoothness</div>
+                                </div>
+                                <div class="measurements-card fat">
+                                    <div class="circle-progress">
+                                        <svg width="50" height="50">
+                                            <circle class="circle-background" cx="25" cy="25" r="18"></circle>
+                                            <circle class="circle-progress-bar" cx="25" cy="25" r="18"></circle>
+                                        </svg>
+                                    </div>
+                                    <div class="measurements-value">12%</div>
+                                    <div class="measurements-label">Sensitivity</div>
+                                </div>
+                                <div class="measurements-card protein">
+                                    <div class="circle-progress">
+                                        <svg width="50" height="50">
+                                            <circle class="circle-background" cx="25" cy="25" r="18"></circle>
+                                            <circle class="circle-progress-bar" cx="25" cy="25" r="18"></circle>
+                                        </svg>
+                                    </div>
+                                    <div class="measurements-value">25%</div>
+                                    <div class="measurements-label">Oil</div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+
+                      </div>
+
+      
+                    </div>
+                  </div>
+
+                <!--/ Expense Overview -->
+          <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+   
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+
+     <script>
+ // Questions data
+ // Define questions
+const questions = [
+    {
+        question: "How old are you?",
+        options: [
+            "Under 20",
+            "20-30",
+            "31-45",
+            "46+"
+        ]
+    },
+    {
+        question: "How would you describe your skin at the end of the day?",
+        options: [
+            "Feels tight and dry",
+            "Looks shiny and feels oily",
+            "Some areas are oily, some dry",
+            "Feels comfortable, not too dry or oily"
+        ]
+    },
+    {
+        question: "Do you get pimples or spots?",
+        options: [
+            "Almost never",
+            "Sometimes",
+            "Often"
+        ]
+    },
+    {
+        question: "Does your skin easily become red or irritated?",
+        options: [
+            "Rarely or never",
+            "Sometimes",
+            "Very easily"
+        ]
+    },
+    {
+        question: "What bothers you most about your skin?",
+        options: [
+            "Spots and pimples",
+            "Fine lines and wrinkles",
+            "Dark spots or uneven tone",
+            "Redness",
+            "Dry or flaky skin",
+            "Oily or shiny skin",
+            "My skin is generally fine"
+        ]
+    }
+];
+
+// Global variables
+let currentQuestion = 0;
+let userAnswers = {};
+let chatHistory = [];
+const chatMessages = document.getElementById('chatMessages');
+
+// Local Storage functions
+function saveProgress() {
+    const progress = {
+        currentQuestion,
+        userAnswers,
+        chatHistory
+    };
+    localStorage.setItem('skincareSurveyProgress', JSON.stringify(progress));
+}
+
+function loadProgress() {
+    const savedProgress = localStorage.getItem('skincareSurveyProgress');
+    if (savedProgress) {
+        const progress = JSON.parse(savedProgress);
+        currentQuestion = progress.currentQuestion;
+        userAnswers = progress.userAnswers;
+        chatHistory = progress.chatHistory || [];
+        return true;
+    }
+    return false;
+}
+
+// Message handling functions
+function addMessage(content, isUser = false, isOption = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isUser ? 'user-message' : ''}`;
+    
+    if (!isOption) {
+        const avatar = document.createElement('div');
+        avatar.className = isUser ? 'user-avatar' : 'bot-avatar';
+        messageDiv.appendChild(avatar);
+    }
+    
+    const messageContent = document.createElement('div');
+    messageContent.className = isOption ? 'options-content' : 'message-content';
+    
+    if (typeof content === 'string') {
+        messageContent.textContent = content;
+    } else {
+        messageContent.appendChild(content);
+    }
+    
+    messageDiv.appendChild(messageContent);
+    chatMessages.appendChild(messageDiv);
+    
+    // Save message to history if it's not options
+    if (!isOption) {
+        chatHistory.push({
+            content: typeof content === 'string' ? content : content.outerHTML,
+            isUser,
+            timestamp: new Date().toISOString()
+        });
+        saveProgress();
+    }
+    
+    scrollToBottom();
+}
+
+function createOptions(options) {
+    const container = document.createElement('div');
+    container.className = 'options-container';
+    
+    options.forEach(option => {
+        const button = document.createElement('button');
+        button.className = 'option-button';
+        button.textContent = option;
+        button.onclick = () => handleOption(option);
+        container.appendChild(button);
+    });
+    
+    return container;
+}
+
+function handleOption(selected) {
+    // Disable all buttons after selection
+    const buttons = document.querySelectorAll('.option-button');
+    buttons.forEach(button => {
+        button.disabled = true;
+        if (button.textContent === selected) {
+            button.style.backgroundColor = '#E8F5E9';
+            button.style.borderColor = '#69B578';
+        }
+    });
+
+    // Save answer and add to chat
+    userAnswers[questions[currentQuestion].question] = selected;
+    addMessage(selected, true);
+    
+    // Move to next question or finish
+    setTimeout(() => {
+        currentQuestion++;
+        saveProgress();
+        if (currentQuestion < questions.length) {
+            askQuestion(currentQuestion);
+        } else {
+            finishQuestionnaire();
+        }
+    }, 1000);
+}
+
+function askQuestion(index) {
+    const question = questions[index];
+    addMessage(question.question);
+    
+    setTimeout(() => {
+        addMessage(createOptions(question.options), false, true);
+    }, 500);
+}
+
+function loadChatHistory() {
+    chatMessages.innerHTML = ''; // Clear existing messages
+    
+    chatHistory.forEach(message => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${message.isUser ? 'user-message' : ''}`;
+        
+        const avatar = document.createElement('div');
+        avatar.className = message.isUser ? 'user-avatar' : 'bot-avatar';
+        messageDiv.appendChild(avatar);
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        
+        // Check if content is HTML or plain text
+        if (message.content.startsWith('<')) {
+            messageContent.innerHTML = message.content;
+        } else {
+            messageContent.textContent = message.content;
+        }
+        
+        messageDiv.appendChild(messageContent);
+        chatMessages.appendChild(messageDiv);
+    });
+}
+
+async function finishQuestionnaire() {
+    addMessage("Thank you for completing the skin assessment! 🌟");
+    
+    // Only proceed if all questions are answered
+    if (Object.keys(userAnswers).length === questions.length) {
+        try {
+            addMessage("Analyzing your responses...");
+            
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    answers: userAnswers
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            // Clear progress and show success message
+            localStorage.removeItem('skincareSurveyProgress');
+            addMessage("Your personalized skin care routine is ready! 🎉");
+            
+            // Redirect to routine page after a short delay
+            setTimeout(() => {
+                window.location.href = '/routine';
+            }, 1500);
+            
+        } catch (error) {
+            console.error('Error:', error);
+            addMessage("Sorry, there was an error processing your results. Please try again.");
+        }
+    }
+}
+
+function scrollToBottom() {
+    const chatContainer = document.querySelector('.chat-container');
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// Initialize the chat
+window.onload = () => {
+    if (loadProgress()) {
+        // Load and display previous chat history
+        loadChatHistory();
+        
+        // Continue from where we left off
+        if (currentQuestion < questions.length) {
+            setTimeout(() => {
+                addMessage("Welcome back! Let's continue with your skin assessment.");
+                setTimeout(() => {
+                    askQuestion(currentQuestion);
+                }, 1000);
+            }, 500);
+        }
+    } else {
+        // Start fresh
+        setTimeout(() => {
+            addMessage("Welcome to your personalized skin assessment! 👋");
+            setTimeout(() => {
+                addMessage("Let's find the perfect skincare routine for you.");
+                setTimeout(() => {
+                    askQuestion(0);
+                }, 1000);
+            }, 1000);
+        }, 500);
+    }
+};
+
+
+const nutrients = [
+            { element: '.carbs .circle-progress-bar', percentage: 75 },
+            { element: '.fat .circle-progress-bar', percentage: 40 },
+            { element: '.protein .circle-progress-bar', percentage: 60 }
+        ];
+
+        nutrients.forEach(nutrient => {
+            const circle = document.querySelector(nutrient.element);
+            if (circle) {
+                const radius = circle.r.baseVal.value;
+                const circumference = 2 * Math.PI * radius;
+                
+                circle.style.strokeDasharray = `${circumference} ${circumference}`;
+                circle.style.strokeDashoffset = circumference;
+
+                const offset = circumference - (nutrient.percentage / 100 * circumference);
+                circle.style.strokeDashoffset = offset;
+            }
+        });
+        
+    </script>
+
+    <!-- <script src="../assets/vendor/libs/jquery/jquery.js"></script> -->
+    <!-- <script src="../assets/vendor/libs/popper/popper.js"></script> -->
+    <script src="../assets/vendor/js/bootstrap.js"></script>
+    <!-- <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script> -->
+    <script src="../assets/vendor/js/menu.js"></script>
+
+    <!-- endbuild -->
+
+    <!-- Vendors JS
+    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+     Main JS -->
+    <script src="../assets/js/main.js"></script>
+
+    <!-- Page JS -->
+    <!-- <script src="../assets/js/dashboards-analytics.js"></script> -->
+
+    <!-- Place this tag before closing body tag for github widget button. -->
+    <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
+  </body>
+</html>

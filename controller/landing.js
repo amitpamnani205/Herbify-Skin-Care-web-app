@@ -15,8 +15,6 @@ const renderTestimonial = ("/testimonial", (req, res) => {
 });
 
 
-const render404 = ("*", (req, res) => {
-    res.render("landing/404.ejs");
-});
 
-module.exports = { renderIndex,renderAbout,renderBlog,renderTestimonial,render404 };
+
+module.exports = { renderIndex,renderAbout,renderBlog,renderTestimonial };

@@ -32,11 +32,14 @@ const loginUser = ("/login", passport.authenticate("local", {
     successRedirect: "/", // Redirect to dashboard on success
     failureRedirect: "/login",    // Redirect back to login on failure
     failureFlash: true,
-}));
+}
+    
+));
 
 const logoutUser = ("/logout", (req, res) => {
     req.logout(() => {
         res.redirect("/login");
+        req.flash('success', 'Goodbye!');
     });
 });
 

@@ -1,317 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Process</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+<% layout('layouts/boilerplate') -%>
 
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<body class="process-body">
+    <section class="process-content">
 
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        nav {
-            background-color: #90bc79;
-            height: 5rem;
-        }
-
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            /* background-color: green; */
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 5rem;
-        }
-
-        .navbar .logo h2 {
-            font-family: "Marcellus", serif;
-            color: #fff;
-            font-size: 32px;
-            font-weight: 400;
-        }
-
-        .navbar button {
-
-            /* height: 2.2rem;
-    width: 6rem; */
-            border: none;
-            background: #1C2900;
-            color: #ffff;
-            border-radius: 5px;
-            font-family: "Open Sans", serif;
-            font-weight: 500;
-            font-size: 0.9rem;
-            margin-left: 35px;
-            padding: 10px 28px;
-
-        }
-
-        .navbar button i {
-            padding-right: 10px;
-
-        }
-
-        .navbar button:hover {
-            background: #1c2900a6;
-
-        }
-
-        main {
-            background-image: url("/images/bg_process.png");
-            /* background-color: #1C2900; */
-            height: 100vh;
-            background-size: cover;
-        }
-
-        .container-body {
-            max-width: 800px;
-            margin: 0 auto;
-            height: 18rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .get-started {
-            max-width: 23rem;
-            width: 100%;
-
-
-
-        }
-
-        .get-started h2 {
-            font-family: "Poppins", serif;
-            color: #fff;
-            font-size: 32px;
-            font-weight: 500;
-            background-color: #90bc79;
-            text-align: center;
-            border-radius: 5px;
-            padding: 15px 0;
-
-        }
-
-        .get-started::before {
-            position: absolute;
-            content: "";
-            width: 100%;
-            height: 100%;
-            top: 0px;
-            left: 0px;
-            clip-path: polygon(66% 0px, 100% 0px, 100% 100%, 33% 100%);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .description {
-            max-width: 35rem;
-            width: 100%;
-            margin: 2rem 0;
-        }
-
-        .description::before {
-            position: absolute;
-            content: "";
-            width: 100%;
-            height: 100%;
-            top: 0px;
-            left: 0px;
-            clip-path: polygon(66% 0px, 100% 0px, 100% 100%, 33% 100%);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .description h4 {
-            font-family: "Poppins", serif;
-            color: #fff;
-            font-size: 21px;
-            font-weight: 500;
-            background-color: #90bc79;
-            text-align: center;
-            border-radius: 5px;
-            padding: 15px 0;
-
-        }
-
-        .steps-container {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: end;
-        }
-
-
-        .steps-container .steps .step-box {
-            /* height: 100%; */
-            height: 12rem;
-            /* width: 100%; */
-            width: 22rem;
-
-            background-color: #90bc79;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-        }
-
-    
-        .plus-icon i {
-            font-size: 7rem;
-            color: #90bc79;
-            padding: 2rem 0;
-        }
-
-        .steps {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-
-
-        .steps-heading {
-            
-            background-color: #1C2900;
-            color: #fff;
-            font-family: "Open Sans", serif;
-            font-weight: 700;
-            max-width: 10rem;
-            width: 100%;
-            text-align: center;
-            padding: 15px 0;
-            border-radius: 5px;
-            margin: 2rem 0;
-
-        }
-
-        .step-icon {
-            width: 20%;
-        }
-
-        .step-icon img {
-            width: 100%;
-        }
-
-        .step-description {
-            text-align: center;
-            color: #ffff;
-            font-family: "Open Sans", serif;
-            font-weight: 500;
-            padding: 0 10px;
-            margin: 13px 0;
-
-        }
-
-        .start-btn{
-            display: flex;
-            justify-content: center;
-          
-        }
-        .start-btn button{
-            border: 3px solid #1C2900;
-            border-radius: 4px;
-            background-color: #fff;
-            color: #1C2900;
-            font-family: "Open Sans", serif;
-            font-weight: 700;
-            padding: 0.6rem 3rem;
-            margin: 2rem 0;
-
-        }
-
-        .start-btn button:hover{
-            background-color: #1C2900;
-            color: #ffff;
-            border: none;
-            padding: 0.7rem 3rem;
-        }
-    </style>
-</head>
-
-<body>
-    <nav>
-        <div class="container">
-            <div class="navbar">
-                <div class="logo">
-                    <h2>Herbify</h2>
-                </div>
-                <div class="nav-btn">
-                    <button><i class="fa-regular fa-user"></i>amit205</button>
-                    <button>Logout</button>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <main>
-        <div class="container">
-            <div class="container-body">
-                <div class="get-started">
-                    <h2>Get Started</h2>
-                </div>
-                <div class="description">
-                    <h4>You're just 2 steps away from glowing</h4>
-                </div>
-            </div>
-            <div class="steps-container">
-                <div class="steps">
-                    <div class="steps-heading">
-                        Step 1
-                    </div>
-                    <div class="step-box">
-                        <div class="step-icon">
-                            <img src="/images/face-id.png" alt="">
-                        </div>
-                        <div class="step-description">
-                            Let’s scan your face and unlock your flawless glow
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="plus-icon">
-                    <i class="fa-solid fa-plus"></i>
-                </div> -->
-                <div class="steps">
-                    <div class="steps-heading">
-                        Step 2
-                    </div>
-                    <div class="step-box">
-                        <div class="step-icon">
-                            <img src="/images/qa.png" alt="">
-                        </div>
-                        <div class="step-description">
-                            Just a few quick questions stand between you and your perfect skin report
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="start-btn">
-                <a href="/analyze/face">  <button> Start Now</button></a>
+    <div class="process-container">
+        <div class="header">
+            <h1>Skin Care Analysis Process</h1>
+            <div class="subtitle">
+                <div class="icon">✨</div>
+                <span>Complete analysis in 2 simple steps</span>
             </div>
         </div>
 
-    </main>
+        <div class="steps-grid">
 
+           <div class="step-card">
+                <div class="step-header">
+                    <h3 class="step-title">Skin Type Analysis</h3>
+                    <span class="tag">Step 1</span>
+                </div>
+                <div class="step-content">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <h3 class="step-title">Questionnaire</h3>
+                    <span class="tag">Step 2</span>
+                </div>
+                <div class="step-content">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+
+           
+
+        </div>
+
+        <div class="buttons">
+           <a href="/analyze"><button class="btn btn-primary">Start Analysis</button></a> 
+        </div>
+    </div>
+</section>
 </body>
-
-</html>

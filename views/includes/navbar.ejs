@@ -24,8 +24,19 @@ class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-5
                     <a href="/blog" class="nav-item nav-link">Blog</a>
 
                 </div>
-                <a href="/login" class="btn btn-dark py-2 px-4 d-none d-lg-inline-block">Log In</a>
-                <a href="/signup" class="btn btn-dark py-2 px-4 d-none d-lg-inline-block">Sign Up</a>
+                <% if (!currUser) { %>
+                    <!-- Show these when user is NOT logged in -->
+                    <a href="/login" class="btn btn-dark py-2 px-4 d-none d-lg-inline-block">Log In</a>
+                    <a href="/signup" class="btn btn-dark py-2 px-4 d-none d-lg-inline-block">Sign Up</a>
+                <% } else { %>
+                    <!-- Show these when user is logged in -->
+
+
+                    <a href="" class="btn btn-dark py-2 px-4 d-none d-lg-inline-block"><i class="fa-regular fa-user"></i> <%= currUser.username %> </a>
+                    <a href="/logout" class="btn btn-dark py-2 px-4 d-none d-lg-inline-block">Logout</a>
+
+
+                <% } %>
             </div>
         </nav>
     </div>
