@@ -808,33 +808,66 @@ async function finishQuestionnaire() {
         try {
             addMessage("Analyzing your responses...");
             
+            // Debug log the answers being sent
+            console.log("[DEBUG] Sending answers to server:", JSON.stringify(userAnswers, null, 2));
+            
             const response = await fetch('/analyze', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({
                     answers: userAnswers
                 })
             });
 
+            // Debug log the raw response
+            console.log("[DEBUG] Raw response status:", response.status);
+            console.log("[DEBUG] Raw response headers:", [...response.headers.entries()]);
+
+            // Check if response is JSON
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                throw new Error(`Expected JSON response but got ${contentType}`);
+            }
+
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            console.log("[DEBUG] Server response:", responseData);
+
+            if (!responseData.success) {
+                throw new Error(responseData.message || "Server returned an unsuccessful response");
             }
 
             // Clear progress and show success message
             localStorage.removeItem('skincareSurveyProgress');
             addMessage("Your personalized skin care routine is ready! 🎉");
             
-            // Redirect to routine page after a short delay
+            // Save questionnaire completed status to localStorage
+            localStorage.setItem('questionnaireCompleted', 'true');
+            
+            // Add debug data to localStorage
+            localStorage.setItem('lastQuestionnaireData', JSON.stringify(userAnswers));
+            
+            // Redirect to process page
             setTimeout(() => {
-                window.location.href = '/routine';
+                window.location.href = responseData.redirect || '/process';
             }, 1500);
             
         } catch (error) {
-            console.error('Error:', error);
+            console.error('[ERROR] Error submitting questionnaire:', error);
             addMessage("Sorry, there was an error processing your results. Please try again.");
+            // Add debug information to the UI for development
+            addMessage(`Debug info: ${error.message}`);
         }
+    } else {
+        console.warn("[WARN] Not all questions answered:", Object.keys(userAnswers).length, "out of", questions.length);
+        addMessage("Please answer all questions before proceeding.");
     }
 }
 

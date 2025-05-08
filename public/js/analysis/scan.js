@@ -143,7 +143,10 @@ async function captureAndAnalyze() {
 async function submitToServer(data) {
     debug('Starting server submission');
     try {
-        // Start redirect timeout
+        // Save completion status to localStorage
+        localStorage.setItem('faceScanCompleted', 'true');
+        
+        // Start redirect timeout - redirect to process page, not routine
         const redirectTimeout = setTimeout(() => {
             debug('Redirect timeout triggered');
             window.location.href = '/process';
@@ -178,13 +181,16 @@ async function submitToServer(data) {
         const result = await response.json();
         debug('Server response data:', result);
 
-        // Redirect after successful submission
+        // Save analysis results to localStorage
+        localStorage.setItem('faceAnalysisResults', JSON.stringify(data.metrics));
+        
+        // Redirect after successful submission to process page, not routine
         window.location.href = '/process';
         
         return result;
     } catch (error) {
         debug('Server submission error:', error);
-        // Ensure redirect happens even on error
+        // Ensure redirect happens even on error - to process page, not routine
         window.location.href = '/process';
         return null;
     }

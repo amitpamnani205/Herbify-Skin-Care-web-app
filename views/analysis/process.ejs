@@ -1,52 +1,262 @@
 <% layout('layouts/boilerplate') -%>
 
-
-<body class="process-body">
-    <section class="process-content">
-
-
-    <div class="process-container">
-        <div class="header">
-            <h1>Skin Care Analysis Process</h1>
-            <div class="subtitle">
-                <div class="icon">✨</div>
-                <span>Complete analysis in 2 simple steps</span>
-            </div>
-        </div>
-
-        <div class="steps-grid">
-
-           <div class="step-card">
-                <div class="step-header">
-                    <h3 class="step-title">Skin Type Analysis</h3>
-                    <span class="tag">Step 1</span>
-                </div>
-                <div class="step-content">
-                    <div class="line"></div>
-                    <div class="line"></div>
-                    <div class="line"></div>
+<div class="container-fluid bg-primary process-hero py-5">
+    <div class="container py-5">
+        <div class="process-container bg-white shadow p-4 rounded">
+            <div class="text-center mb-4">
+                <h1 class="display-5 fw-bold">Skin Care Analysis Process</h1>
+                <div class="d-flex align-items-center justify-content-center gap-2 text-muted">
+                    <div class="icon-circle bg-primary text-white">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <span>Complete both steps for your personalized skin care routine</span>
                 </div>
             </div>
 
-            <div class="step-card">
-                <div class="step-header">
-                    <h3 class="step-title">Questionnaire</h3>
-                    <span class="tag">Step 2</span>
-                </div>
-                <div class="step-content">
-                    <div class="line"></div>
-                    <div class="line"></div>
-                    <div class="line"></div>
+            <div class="steps-timeline mb-4">
+                <div class="progress" style="height: 8px;">
+                    <div class="progress-bar bg-primary" id="progress-fill" role="progressbar" style="width: 0%"></div>
                 </div>
             </div>
 
-           
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <div class="card h-100 process-card" id="step-questionnaire">
+                        <div class="card-body">
+                            <div class="d-flex mb-3">
+                                <div class="me-3 text-center">
+                                    <i class="fas fa-clipboard-list text-primary fa-2x mb-2"></i>
+                                    <span class="badge rounded-pill" id="status-questionnaire">Pending</span>
+                                </div>
+                                <div>
+                                    <h3 class="card-title h5 fw-bold">Questionnaire</h3>
+                                    <p class="card-subtitle text-muted small mb-2">Answer questions about your skin type and concerns</p>
+                                    <span class="badge bg-light text-dark">Step 1</span>
+                                </div>
+                            </div>
+                            <p class="card-text">Complete a brief questionnaire to help us understand your skin's specific needs and concerns.</p>
+                            <div class="text-end mt-3">
+                                <a href="/analyze" class="btn btn-primary" id="questionnaire-btn">Start Questionnaire</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        </div>
+                <div class="col-md-6">
+                    <div class="card h-100 process-card" id="step-facescan">
+                        <div class="card-body">
+                            <div class="d-flex mb-3">
+                                <div class="me-3 text-center">
+                                    <i class="fas fa-camera text-primary fa-2x mb-2"></i>
+                                    <span class="badge rounded-pill" id="status-facescan">Pending</span>
+                                </div>
+                                <div>
+                                    <h3 class="card-title h5 fw-bold">Skin Analysis Scan</h3>
+                                    <p class="card-subtitle text-muted small mb-2">Take a photo for AI-powered skin analysis</p>
+                                    <span class="badge bg-light text-dark">Step 2</span>
+                                </div>
+                            </div>
+                            <p class="card-text">Use your camera to capture a clear photo of your face for our AI to analyze key skin metrics.</p>
+                            <div class="text-end mt-3">
+                                <a href="/analyze/face" class="btn btn-primary" id="facescan-btn">Start Scan</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="buttons">
-           <a href="/analyze"><button class="btn btn-primary">Start Analysis</button></a> 
+            <div class="text-center pt-3 border-top">
+                <p class="text-muted mb-3" id="completion-message">Complete both steps to view your personalized skin care routine</p>
+                <a href="/routine" id="view-results-btn" class="btn btn-success" style="display: none;">View Your Results</a>
+            </div>
         </div>
     </div>
-</section>
-</body>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check for query parameters
+        const params = new URLSearchParams(window.location.search);
+        const fromQuestionnaire = params.get('from') === 'questionnaire';
+        
+        // If redirected from questionnaire, mark it as completed
+        if (fromQuestionnaire) {
+            console.log('Detected redirect from questionnaire completion');
+            localStorage.setItem('questionnaireCompleted', 'true');
+        }
+        
+        // Clean up URL if needed
+        if (window.location.search) {
+            history.replaceState(null, '', window.location.pathname);
+        }
+        
+        // Check completion status of both steps
+        checkCompletion();
+        
+        // Try to refresh from API, but don't block UI update
+        refreshFromApi().catch(err => {
+            console.error('API refresh failed, using local data:', err);
+        });
+        
+        // Main function to update completion status UI
+        function checkCompletion() {
+            // Get completion status from localStorage
+            const questionnaireCompleted = localStorage.getItem('questionnaireCompleted') === 'true';
+            const faceScanCompleted = localStorage.getItem('faceScanCompleted') === 'true';
+            
+            console.log('Current status:', { questionnaireCompleted, faceScanCompleted });
+            
+            // Update UI elements
+            updateStatus('questionnaire', questionnaireCompleted);
+            updateStatus('facescan', faceScanCompleted);
+            updateButtons(questionnaireCompleted, faceScanCompleted);
+            updateProgress(questionnaireCompleted, faceScanCompleted);
+            
+            // Show results button if both steps completed
+            if (questionnaireCompleted && faceScanCompleted) {
+                document.getElementById('completion-message').textContent = 'All steps completed! View your personalized skin care routine.';
+                document.getElementById('view-results-btn').style.display = 'block';
+            }
+        }
+        
+        // Function to refresh completion status from API
+        async function refreshFromApi() {
+            try {
+                console.log('Refreshing status from API...');
+                const response = await fetch('/api/checkAnalysisStatus');
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('API response:', data);
+                
+                // Update localStorage with API data
+                if (data.questionnaireCompleted) {
+                    localStorage.setItem('questionnaireCompleted', 'true');
+                }
+                
+                if (data.faceScanCompleted) {
+                    localStorage.setItem('faceScanCompleted', 'true');
+                }
+                
+                // Update UI after API refresh
+                checkCompletion();
+                return true;
+            } catch (error) {
+                console.error('Error refreshing from API:', error);
+                return false;
+            }
+        }
+        
+        // Update status badges and cards
+        function updateStatus(stepName, isCompleted) {
+            const statusElement = document.getElementById('status-' + stepName);
+            const stepCard = document.getElementById('step-' + stepName);
+            
+            if (isCompleted) {
+                statusElement.textContent = 'Completed';
+                statusElement.classList.add('bg-success');
+                statusElement.classList.add('text-white');
+                stepCard.classList.add('border-success');
+                stepCard.style.backgroundColor = 'rgba(25, 135, 84, 0.05)';
+            } else {
+                statusElement.textContent = 'Pending';
+                statusElement.classList.add('bg-warning');
+                statusElement.classList.add('text-dark');
+            }
+        }
+        
+        // Update button text and styles
+        function updateButtons(questionnaireCompleted, faceScanCompleted) {
+            const questionnaireBtn = document.getElementById('questionnaire-btn');
+            const facescanBtn = document.getElementById('facescan-btn');
+            
+            if (questionnaireCompleted) {
+                questionnaireBtn.textContent = 'Review Questionnaire';
+                questionnaireBtn.classList.remove('btn-primary');
+                questionnaireBtn.classList.add('btn-outline-success');
+            }
+            
+            if (faceScanCompleted) {
+                facescanBtn.textContent = 'Review Face Scan';
+                facescanBtn.classList.remove('btn-primary');
+                facescanBtn.classList.add('btn-outline-success');
+            }
+            
+            // Disable face scan button if questionnaire not completed
+            if (!questionnaireCompleted) {
+                facescanBtn.classList.add('disabled');
+                facescanBtn.title = 'Please complete the questionnaire first';
+            } else {
+                facescanBtn.classList.remove('disabled');
+                facescanBtn.removeAttribute('title');
+            }
+        }
+        
+        // Update progress bar
+        function updateProgress(step1Done, step2Done) {
+            const progressFill = document.getElementById('progress-fill');
+            let progress = 0;
+            
+            if (step1Done) progress += 50;
+            if (step2Done) progress += 50;
+            
+            progressFill.style.width = progress + '%';
+        }
+    });
+</script>
+
+<style>
+    .process-hero {
+        background-image: url('/images/herbal_ingredients.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .process-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(rgba(144, 188, 121, 0.9), rgba(144, 188, 121, 0.85));
+        z-index: -1;
+    }
+    
+    .process-container {
+        max-width: 900px;
+        margin: 0 auto;
+        animation: fadeIn 1s ease;
+    }
+    
+    .process-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+    }
+    
+    .process-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .icon-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style> 

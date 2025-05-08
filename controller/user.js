@@ -6,7 +6,6 @@ const flash = require("connect-flash");
 
 
 
-
 const renderSignUp = ("/signup",(req,res)=>{
     res.render("users/signup.ejs");
 });
@@ -15,6 +14,7 @@ const signUpUser = ("/signup",async(req,res) => {
     try {
         const { username,fullname, email, password } = req.body;
         const user = new UserModel({ username,fullname, email });
+        console.log(user);
         await UserModel.register(user, password);
         res.redirect("/");
     } catch (err) {

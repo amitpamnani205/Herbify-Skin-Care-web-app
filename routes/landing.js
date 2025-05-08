@@ -7,7 +7,7 @@ router
     .get(landingController.renderIndex)
 
 router
-    .route("/abour")
+    .route("/about")
     .get(landingController.renderAbout)
 
 router 
