@@ -319,79 +319,87 @@
 
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
-            <a href="index.html" class="app-brand-link">
-              <span class="app-brand-text demo menu-text fw-bold ms-2">HERBIFY</span>
+              <a href="/analyze" class="app-brand-link">
+                <span class="app-brand-text demo menu-text fw-bold ms-2">HERBIFY</span>
+              </a>
+  
+              <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                <i class="bx bx-chevron-left bx-sm d-flex align-items-center justify-content-center"></i>
+              </a>
+            </div>
+
+        <div class="menu-inner-shadow"></div>
+
+        <ul class="menu-inner py-1">
+          <!-- Dashboards -->
+          <li class="menu-item active">
+            <a href="/analyze" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-home-smile"></i>
+              <div class="text-truncate" data-i18n="Dashboards">Skin Survey</div>
+              <!-- <span class="badge rounded-pill bg-danger ms-auto">5</span> -->
             </a>
+          </li>
 
-            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-              <i class="bx bx-chevron-left bx-sm d-flex align-items-center justify-content-center"></i>
+          <!-- Layouts -->
+          <li class="menu-item">
+            <a href="/routine" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div class="text-truncate" data-i18n="Layouts">Your Routine</div>
             </a>
-          </div>
+          </li>
 
-          <div class="menu-inner-shadow"></div>
-
-          <ul class="menu-inner py-1">
-            <!-- Dashboards -->
-            <li class="menu-item active open">
-              <a href="javascript:void(0);" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-smile"></i>
-                <div class="text-truncate" data-i18n="Dashboards">Skin Survey</div>
-                <!-- <span class="badge rounded-pill bg-danger ms-auto">5</span> -->
-              </a>
-
-            </li>
-
-            <!-- Layouts -->
-            <li class="menu-item">
-              <a href="pages-account-settings-account.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-layout"></i>
-                <div class="text-truncate" data-i18n="Layouts">Your Routine</div>
-              </a>
-
-
-            </li>
-
-            
-            <!-- Apps & Pages -->
-            <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">Profile Settings</span>
-            </li>
-            
-            <!-- Pages -->
-            <li class="menu-item">
-              <a href="pages-account-settings-account.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div class="text-truncate" data-i18n="Account">Account Settings</div>
-              </a>
-
-            </li>
-            
-
-            <!-- Components -->
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
-            <!-- Cards -->
-            <li class="menu-item">
-              <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div class="text-truncate" data-i18n="Basic">Blogs</div>
-              </a>
-            </li>
-            <!-- User interface -->
-            
-
-            
-            <li class="menu-item">
-              <a
-                href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
-                target="_blank"
-                class="menu-link">
-                <i class="menu-icon tf-icons bx bx-support"></i>
-                <div class="text-truncate" data-i18n="Support">Support</div>
-              </a>
-            </li>
-
-          </ul>
-        </aside>
+          <!-- Apps & Pages -->
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Profile Settings</span>
+          </li>
+          
+          <!-- Pages -->
+          <li class="menu-item">
+            <a href="/profile" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-dock-top"></i>
+              <div class="text-truncate" data-i18n="Account">Account Settings</div>
+            </a>
+          </li>
+          
+          <!-- Components -->
+          <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
+          <!-- Cards -->
+          <li class="menu-item">
+            <a href="/blog" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-collection"></i>
+              <div class="text-truncate" data-i18n="Basic">Blogs</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/progress" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-line-chart"></i>
+              <div class="text-truncate" data-i18n="Basic">Track Progress</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/product" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-package"></i>
+              <div class="text-truncate" data-i18n="Basic">Products</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/reward" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-gift"></i>
+              <div class="text-truncate" data-i18n="Basic">Rewards</div>
+            </a>
+          </li>
+          
+          <li class="menu-item">
+            <a
+              href="https://github.com/"
+              target="_blank"
+              class="menu-link">
+              <i class="menu-icon tf-icons bx bx-support"></i>
+              <div class="text-truncate" data-i18n="Support">Support</div>
+            </a>
+          </li>
+        </ul>
+      </aside>
         <!-- / Menu -->
 
         <!-- Layout container -->
@@ -400,7 +408,7 @@
 
           <nav
             class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-            id="layout-navbar" style="background: white;">
+            id="layout-navbar" style="background-color: white !important;">
             <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
               <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
                 <i class="bx bx-menu bx-md"></i>
