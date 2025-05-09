@@ -21,6 +21,8 @@ const skinProfileModel = require("./models/skinProfile");
 
 const flash = require("connect-flash");
 
+require('dotenv').config();
+
 // Set up middleware
 app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json({limit: '50mb'}));
@@ -51,9 +53,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Database connection
-mongoose.connect('mongodb://127.0.0.1:27017/cvmu_hackathon')
-  .then(() => console.log('Connected to MongoDB!'))
-  .catch(err => console.error('MongoDB connection error:', err));
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB Atlas!'))
+  .catch(err => console.error('MongoDB Atlas connection error:', err));
 
 // Passport configuration
 passport.use(new LocalStrategy(UserModel.authenticate()));
