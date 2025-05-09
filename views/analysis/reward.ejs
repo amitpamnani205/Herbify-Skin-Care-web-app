@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  class="light-style layout-menu-fixed layout-compact"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../assets/"
+  data-template="vertical-menu-template-free"
+  data-style="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <title>Herbify - Daily Rewards</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet" />
+
+    <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="../assets/css/demo.css" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+    <!-- Page CSS -->
+    <style>
+        .rewards-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .rewards-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .token-balance {
+            background: #E8F5E9;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: #90BC79;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .token-icon {
+            width: 24px;
+            height: 24px;
+            background: #90BC79;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .daily-rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .reward-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reward-card.available {
+            border-color: #90BC79;
+            background: #E8F5E9;
+        }
+
+        .reward-card.claimed {
+            background: #f0f0f0;
+            opacity: 0.7;
+        }
+
+        .reward-card:hover:not(.claimed) {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .reward-day {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .reward-amount {
+            font-size: 18px;
+            font-weight: bold;
+            color: #90BC79;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .reward-status {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #90BC79;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .streak-info {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .streak-count {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .streak-icon {
+            width: 32px;
+            height: 32px;
+            background: #FFB74D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .claim-animation {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+
+        .floating-token {
+            animation: float 1s ease-out forwards;
+            position: absolute;
+            font-size: 24px;
+        }
+
+        /* Token Collection Animation */
+        @keyframes collect {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .collecting {
+            animation: collect 0.5s ease-out;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #90BC79;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* Bonus Alert */
+        .bonus-alert {
+            background: #FFF3E0;
+            border-left: 4px solid #FFB74D;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bonus-icon {
+            color: #FFB74D;
+            font-size: 20px;
+        }
+    </style>
+
+    <!-- Helpers -->
+    <script src="../assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="../assets/js/config.js"></script>
+  </head>
+
+  <body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+          <div class="app-brand demo">
+              <a href="/analyze" class="app-brand-link">
+                <span class="app-brand-text demo menu-text fw-bold ms-2">HERBIFY</span>
+              </a>
+  
+              <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                <i class="bx bx-chevron-left bx-sm d-flex align-items-center justify-content-center"></i>
+              </a>
+            </div>
+
+        <div class="menu-inner-shadow"></div>
+
+        <ul class="menu-inner py-1">
+          <!-- Dashboards -->
+          <li class="menu-item">
+            <a href="/analyze" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-home-smile"></i>
+              <div class="text-truncate" data-i18n="Dashboards">Skin Survey</div>
+              <!-- <span class="badge rounded-pill bg-danger ms-auto">5</span> -->
+            </a>
+
+          </li>
+
+          <!-- Layouts -->
+          <li class="menu-item">
+            <a href="/routine" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div class="text-truncate" data-i18n="Layouts">Your Routine</div>
+            </a>
+
+
+          </li>
+
+          
+          <!-- Apps & Pages -->
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Profile Settings</span>
+          </li>
+          
+          <!-- Pages -->
+          <li class="menu-item">
+            <a href="/profile" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-dock-top"></i>
+              <div class="text-truncate" data-i18n="Account">Account Settings</div>
+            </a>
+
+          </li>
+          
+
+          <!-- Components -->
+          <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
+          <!-- Cards -->
+          <li class="menu-item">
+            <a href="/blog" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-collection"></i>
+              <div class="text-truncate" data-i18n="Basic">Blogs</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/progress" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-line-chart"></i>
+              <div class="text-truncate" data-i18n="Basic">Track Progress</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/product" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-package"></i>
+              <div class="text-truncate" data-i18n="Basic">Products</div>
+            </a>
+          </li>
+          <li class="menu-item active">
+            <a href="/reward" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-gift"></i>
+              <div class="text-truncate" data-i18n="Basic">Rewards</div>
+            </a>
+          </li>
+          <!-- User interface -->
+          
+
+          
+          <li class="menu-item">
+            <a
+              href="https://github.com/"
+              target="_blank"
+              class="menu-link">
+              <i class="menu-icon tf-icons bx bx-support"></i>
+              <div class="text-truncate" data-i18n="Support">Support</div>
+            </a>
+          </li>
+
+        </ul>
+      </aside>
+
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
+
+          <nav
+            class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+            id="layout-navbar">
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
+              <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
+                <i class="bx bx-menu bx-md"></i>
+              </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <!-- User -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <a
+                    class="nav-link dropdown-toggle hide-arrow p-0"
+                    href="javascript:void(0);"
+                    data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                     A
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <div class="d-flex">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-online">
+                              A
+                            </div>
+                          </div>
+                          <div class="flex-grow-1">
+                            <h6 class="mb-0">John Doe</h6>
+                            <small class="text-muted">Admin</small>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider my-1"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <i class="bx bx-user bx-md me-3"></i><span>My Profile</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#"> <i class="bx bx-cog bx-md me-3"></i><span>Settings</span> </a>
+                    </li>
+                    
+                    <li>
+                      <div class="dropdown-divider my-1"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0);">
+                        <i class="bx bx-power-off bx-md me-3"></i><span>Log Out</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!--/ User -->
+              </ul>
+            </div>
+          </nav>
+
+          <!-- / Navbar -->
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="py-3 mb-4"><span class="text-muted fw-light">Herbify /</span> Daily Rewards</h4>
+              
+              <div class="rewards-container">
+                <div class="rewards-header">
+                    <h3>Daily Rewards</h3>
+                    <div class="token-balance">
+                        <div class="token-icon">🌿</div>
+                        <span id="tokenCount">120</span> Tokens
+                    </div>
+                </div>
+
+                <div class="bonus-alert">
+                    <div class="bonus-icon">🎉</div>
+                    <div>
+                        <strong>2x Bonus Day!</strong> 
+                        <span>Claim double tokens today</span>
+                    </div>
+                </div>
+
+                <div class="daily-rewards-grid" id="rewardsGrid">
+                    <!-- Days will be filled by JavaScript -->
+                </div>
+
+                <div class="streak-info">
+                    <div class="streak-count">
+                        <div class="streak-icon">🔥</div>
+                        <div>
+                            <div style="font-weight: 600;">3 Day Streak</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="color: #666;">
+                        4 more days for bonus reward
+                    </div>
+                </div>
+              </div>
+            </div>
+            <!-- / Content -->
+           
+            <div class="content-backdrop fade"></div>
+          </div>
+          <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+
+    <!-- Main JS -->
+    <script src="../assets/js/main.js"></script>
+
+    <!-- Page JS -->
+    <script>
+        const rewards = [
+            { day: 1, tokens: 10, claimed: true },
+            { day: 2, tokens: 15, claimed: true },
+            { day: 3, tokens: 20, claimed: false, available: true },
+            { day: 4, tokens: 25, claimed: false },
+            { day: 5, tokens: 30, claimed: false },
+            { day: 6, tokens: 35, claimed: false },
+            { day: 7, tokens: 50, claimed: false }
+        ];
+
+        let currentTokens = 120;
+
+        function initializeRewards() {
+            const grid = document.getElementById('rewardsGrid');
+            rewards.forEach(reward => {
+                const card = document.createElement('div');
+                card.className = `reward-card ${reward.claimed ? 'claimed' : ''} ${reward.available ? 'available' : ''}`;
+                card.innerHTML = `
+                    <div class="reward-day">Day ${reward.day}</div>
+                    <div class="reward-amount">
+                        <span class="token-icon" style="width: 20px; height: 20px; font-size: 12px;">🌿</span>
+                        ${reward.tokens}
+                    </div>
+                    ${reward.claimed ? '<div class="reward-status">✓</div>' : ''}
+                `;
+
+                if (reward.available && !reward.claimed) {
+                    card.onclick = () => claimReward(reward, card);
+                }
+                grid.appendChild(card);
+            });
+        }
+
+        function claimReward(reward, card) {
+            if (!reward.available || reward.claimed) return;
+
+            // Create floating tokens animation
+            const rect = card.getBoundingClientRect();
+            const tokenBalance = document.querySelector('.token-balance');
+            const balanceRect = tokenBalance.getBoundingClientRect();
+
+            for (let i = 0; i < 3; i++) {
+                const token = document.createElement('div');
+                token.className = 'floating-token';
+                token.textContent = '🌿';
+                token.style.left = `${rect.left + rect.width/2}px`;
+                token.style.top = `${rect.top + rect.height/2}px`;
+                document.body.appendChild(token);
+
+                setTimeout(() => token.remove(), 1000);
+            }
+
+            // Update UI
+            reward.claimed = true;
+            card.className = 'reward-card claimed';
+            card.innerHTML += '<div class="reward-status">✓</div>';
+
+            // Update token count with animation
+            currentTokens += reward.tokens;
+            document.getElementById('tokenCount').textContent = currentTokens;
+            tokenBalance.classList.add('collecting');
+            setTimeout(() => tokenBalance.classList.remove('collecting'), 500);
+
+            // Make next day available if exists
+            const nextReward = rewards[reward.day];
+            if (nextReward) {
+                nextReward.available = true;
+                const nextCard = card.nextElementSibling;
+                if (nextCard) nextCard.className = 'reward-card available';
+            }
+        }
+
+        // Initialize the rewards grid when the page loads
+        document.addEventListener('DOMContentLoaded', initializeRewards);
+    </script>
+  </body>
+</html> 

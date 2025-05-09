@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Herbify - Progress Tracking</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f5f5f5;
+        }
+
+        .layout-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar styles */
+        .layout-menu {
+            width: 260px;
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .app-brand {
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .menu-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .menu-inner {
+            list-style: none;
+        }
+
+        .menu-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: #666;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .menu-link:hover {
+            background: #E8F5E9;
+            color: #69B578;
+        }
+
+        .menu-link i {
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        .menu-header {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #999;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Main content styles */
+        .layout-page {
+            flex: 1;
+            padding: 1rem;
+        }
+
+        /* Navbar */
+        .layout-navbar {
+            background: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Content Grid */
+        .progress-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Main Progress Section */
+        .main-progress {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .scan-btn {
+            background: #90BC79;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .scan-btn:hover {
+            background: #7da568;
+        }
+
+        .scan-btn.disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Days Grid */
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .day-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .day-card.current {
+            border-color: #90BC79;
+            background: #E8F5E9;
+        }
+
+        .day-card.completed {
+            background: #E8F5E9;
+        }
+
+        .day-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .day-status {
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            background: #E8F5E9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+
+        .stat-title {
+            font-weight: 600;
+            color: #566a7f;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #90BC79;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #90BC79;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        /* Photos Section */
+        .photos-section {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .photo-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 150px;
+            background: #E8F5E9;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #90BC79;
+            margin-bottom: 0.5rem;
+        }
+
+        .photo-date {
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        @media (max-width: 1024px) {
+            .progress-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .layout-menu {
+                position: fixed;
+                left: -260px;
+                transition: left 0.3s;
+                z-index: 1000;
+                height: 100vh;
+            }
+            
+            .layout-menu.active {
+                left: 0;
+            }
+
+            .days-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .photos-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .days-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .photos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout-wrapper">
+        <!-- Sidebar -->
+        <aside class="layout-menu">
+            <div class="app-brand">
+                <a href="#" class="menu-text">HERBIFY</a>
+            </div>
+            <ul class="menu-inner">
+                <li class="menu-item">
+                    <a href="/analyze" class="menu-link">
+                        <i class='bx bx-home-smile'></i>
+                        <span>Skin Survey</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/routine" class="menu-link">
+                        <i class='bx bx-layout'></i>
+                        <span>Your Routine</span>
+                    </a>
+                </li>
+                <div class="menu-header">Profile Settings</div>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class='bx bx-user'></i>
+                        <span>Account Settings</span>
+                    </a>
+                </li>
+                <div class="menu-header">Components</div>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class='bx bx-book-content'></i>
+                        <span>Blogs</span>
+                    </a>
+                </li>
+                <li class="menu-item active">
+                    <a href="/progress" class="menu-link">
+                        <i class='bx bx-line-chart'></i>
+                        <span>Track Progress</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/product" class="menu-link">
+                        <i class='bx bx-package'></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link">
+                        <i class='bx bx-support'></i>
+                        <span>Support</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Layout page -->
+        <div class="layout-page">
+            <!-- Navbar -->
+            <nav class="layout-navbar">
+                <h2 style="margin: 0;">Progress Tracking</h2>
+                <div style="width: 40px; height: 40px; background: #E8F5E9; border-radius: 50%; display: flex; align-items: center; justify-content: center;">A</div>
+            </nav>
+
+            <!-- Content -->
+            <div class="progress-container">
+                <!-- Main Progress Section -->
+                <div class="main-progress">
+                    <div class="progress-header">
+                        
+                        <h3 style="margin: 0;">Your 7-Day Progress</h3>
+                        <a href="/analyze">
+                        <button class="scan-btn" id="scanBtn">Scan Face</button></a>
+                    </div>
+
+                    <div class="days-grid" id="daysGrid">
+                        <!-- Days will be populated by JavaScript -->
+                    </div>
+
+                    <div class="photos-section">
+                        <h4>Recent Progress Photos</h4>
+                        <div class="photos-grid">
+                            <div class="photo-card">
+                                <div class="photo-placeholder">Day 1</div>
+                                <div class="photo-date">June 1, 2024</div>
+                            </div>
+                            <div class="photo-card">
+                                <div class="photo-placeholder">Day 4</div>
+                                <div class="photo-date">June 4, 2024</div>
+                            </div>
+                            <div class="photo-card">
+                                <div class="photo-placeholder">Day 7</div>
+                                <div class="photo-date">June 7, 2024</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Section -->
+                <div class="stats-section">
+                    <h3>Progress Stats</h3>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon">💧</div>
+                            <div class="stat-title">Brightness</div>
+                        </div>
+                        <div class="stat-value">75%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon">✨</div>
+                            <div class="stat-title">Smoothness</div>
+                        </div>
+                        <div class="stat-value">68%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 68%"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-title">Oilliness</div>
+                        </div>
+                        <div class="stat-value">82%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 82%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentDay = 3;
+        let lastScanTime = null;
+        const SCAN_COOLDOWN = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+        function initializeProgress() {
+            const daysGrid = document.getElementById('daysGrid');
+            daysGrid.innerHTML = ''; // Clear existing content
+            
+            for (let i = 1; i <= 7; i++) {
+                const dayCard = document.createElement('div');
+                dayCard.className = `day-card ${i === currentDay ? 'current' : ''} ${i < currentDay ? 'completed' : ''}`;
+                dayCard.innerHTML = `
+                    <div class="day-number">Day ${i}</div>
+                    <div class="day-status">${i < currentDay ? 'Completed' : i === currentDay ? 'Current' : 'Upcoming'}</div>
+                `;
+                daysGrid.appendChild(dayCard);
+            }
+            updateScanButton();
+        }
+
+        function updateScanButton() {
+            const scanBtn = document.getElementById('scanBtn');
+            const now = new Date().getTime();
+            const canScan = !lastScanTime || (now - lastScanTime) >= SCAN_COOLDOWN;
+            
+            if (!canScan) {
+                scanBtn.classList.add('disabled');
+                
+                // Calculate time remaining
+                const timeLeft = SCAN_COOLDOWN - (now - lastScanTime);
+                const hoursLeft = Math.floor(timeLeft / (60 * 60 * 1000));
+                const minutesLeft = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+                
+                scanBtn.textContent = `Scan Again in ${hoursLeft}h ${minutesLeft}m`;
+            } else {
+                scanBtn.classList.remove('disabled');
+                scanBtn.textContent = 'Scan Face';
+            }
+        }
+
+        // For demo purposes: simulate a scan
+        function simulateScan() {
+            const now = new Date().getTime();
+            const canScan = !lastScanTime || (now - lastScanTime) >= SCAN_COOLDOWN;
+            
+            if (canScan) {
+                lastScanTime = now;
+                currentDay++;
+                if (currentDay > 7) currentDay = 7; // Cap at 7
+                
+                initializeProgress();
+                updateScanButton();
+                
+                // Save to localStorage for persistence
+                localStorage.setItem('lastScanTime', lastScanTime);
+                localStorage.setItem('currentDay', currentDay);
+            }
+        }
+
+        // Load saved data from localStorage
+        function loadSavedData() {
+            const savedLastScanTime = localStorage.getItem('lastScanTime');
+            const savedCurrentDay = localStorage.getItem('currentDay');
+            
+            if (savedLastScanTime) {
+                lastScanTime = parseInt(savedLastScanTime);
+            }
+            
+            if (savedCurrentDay) {
+                currentDay = parseInt(savedCurrentDay);
+            }
+            
+            initializeProgress();
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedData();
+            
+            // Add scan button event listener
+            const scanBtn = document.getElementById('scanBtn');
+            if (scanBtn) {
+                scanBtn.addEventListener('click', function(e) {
+                    // This is now handled by the link to /analyze
+                    // simulateScan();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

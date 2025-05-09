@@ -15,6 +15,31 @@ router.get("/process", isLoggedIn, analyzeController.renderProcess);
 // Question route (HTML response)
 router.get("/analyze", isLoggedIn, analyzeController.renderQuestion);
 
+// Routine route (HTML response)
+router.get("/routine", isLoggedIn, (req, res) => {
+    res.render('analysis/routine.ejs');
+});
+
+// Product route (HTML response)
+router.get("/product", isLoggedIn, (req, res) => {
+    res.render('analysis/product.ejs');
+});
+
+// Progress route (HTML response)
+router.get("/progress", isLoggedIn, (req, res) => {
+    res.render('analysis/progress.ejs');
+});
+
+// Profile route (HTML response)
+router.get("/profile", isLoggedIn, (req, res) => {
+    res.render('analysis/profile.ejs');
+});
+
+// Reward route (HTML response)
+router.get("/reward", isLoggedIn, (req, res) => {
+    res.render('analysis/reward.ejs');
+});
+
 // Save questionnaire route (JSON response)
 router.post("/analyze", 
     isLoggedIn, 

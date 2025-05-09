@@ -1,0 +1,1079 @@
+<!doctype html>
+<html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free" data-style="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <title>Herbify - Your Personalized Skincare Routine</title>
+  <meta name="description" content="Personalized skincare routine based on your skin type" />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+  
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="../assets/css/demo.css" />
+  <link rel="stylesheet" href="../assets/vendor/css/pages/page-auth.css" />
+  
+  <!-- Helpers -->
+  <script src="../assets/vendor/js/helpers.js"></script>
+  
+  <style>
+    :root {
+      --primary-color: #90BC79;
+      --primary-light: #E8F5E9;
+      --primary-dark: #7da568;
+      --text-dark: #2D3748;
+      --text-light: #718096;
+      --border-radius: 12px;
+      --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Video section styling */
+    .video-card {
+      border: none;
+      overflow: hidden;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 2rem;
+      height: 100%;
+    }
+
+    .video-card-header {
+      background-color: var(--primary-light);
+      border-bottom: 2px solid var(--primary-color);
+      padding: 1rem 1.25rem;
+    }
+
+    .video-card-title {
+      margin: 0;
+      color: var(--text-dark);
+      font-weight: 600;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .video {
+      width: 100%;
+      display: block;
+      border-bottom-left-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
+    }
+
+    .controls {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .controls::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: -50px;
+      right: -50px;
+      bottom: -50px;
+      background: radial-gradient(rgba(0, 0, 0, 0.3), transparent 70%);
+      border-radius: 50%;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .controls:hover {
+      background: rgba(0, 0, 0, 0.7);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .controls:hover::before {
+      opacity: 1;
+    }
+
+    .play-pause-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      line-height: 40px;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Remedies section styling */
+    .remedies-card {
+      border: none;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .remedies-card-header {
+      background-color: var(--primary-light);
+      border-bottom: 2px solid var(--primary-color);
+      padding: 1rem 1.25rem;
+    }
+
+    .remedies-card-title {
+      margin: 0;
+      color: var(--text-dark);
+      font-weight: 600;
+    }
+    
+    .card-body.p-3 {
+      flex: 1;
+      padding: 1rem !important;
+      overflow: hidden;
+    }
+    
+    #skincare-routine {
+      height: 100%;
+      overflow-y: auto;
+      padding-right: 6px;
+      max-height: 430px;
+    }
+    
+    /* Scrollbar styling */
+    #skincare-routine::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    #skincare-routine::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    
+    #skincare-routine::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 10px;
+    }
+    
+    #skincare-routine::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-dark);
+    }
+
+    .skin-analysis {
+      background: white;
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin-bottom: 1.25rem;
+      border-left: 4px solid #3498db;
+    }
+
+    .routine-card {
+      background: white;
+      border-radius: 8px;
+      padding: 0.75rem !important;
+      margin-bottom: 0.75rem !important;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .routine-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .morning-routine {
+      border-left: 4px solid #f39c12;
+    }
+
+    .night-routine {
+      border-left: 4px solid #8e44ad;
+    }
+
+    .routine-title {
+      margin-bottom: 0.5rem !important;
+      font-size: 1rem !important;
+    }
+
+    .step {
+      padding: 0.5rem !important;
+      margin-bottom: 0.5rem !important;
+      background: #f8f9fa;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .step:hover {
+      background: var(--primary-light);
+    }
+
+    .reaction-link {
+      color: #e74c3c;
+      font-size: 12px;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .reaction-link:hover {
+      color: #c0392b;
+      text-decoration: none;
+    }
+
+    .alternative-product {
+      background-color: #f8f9f9;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border-left: 3px solid #2ecc71;
+      display: none;
+      font-size: 0.85rem;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .buy-now-btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: var(--primary-color);
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      text-align: center;
+      width: auto;
+      min-width: 150px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin: 2rem auto;
+    }
+
+    .buy-now-btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Equal height rows */
+    .equal-height {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    
+    .equal-height > div[class*='col-'] {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .equal-height .card {
+      flex: 1;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .routine-container {
+        flex-direction: column;
+      }
+      
+      .buy-now-btn {
+        width: 100%;
+        max-width: 280px;
+      }
+      
+      .equal-height {
+        display: block;
+      }
+      
+      #skincare-routine {
+        max-height: 300px;
+      }
+    }
+
+    .video-info {
+      border-top: 1px solid rgba(0,0,0,0.05);
+      border-bottom-left-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
+      background-color: var(--primary-light) !important;
+    }
+    
+    .video-tags .badge {
+      padding: 5px 10px;
+      font-weight: 500;
+      font-size: 0.75rem;
+    }
+    
+    .badge.bg-primary {
+      background-color: var(--primary-color) !important;
+    }
+    
+    .badge.bg-info {
+      background-color: #60a5fa !important;
+    }
+    
+    .badge.bg-success {
+      background-color: #10b981 !important;
+    }
+
+    .video-progress-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background-color: rgba(0, 0, 0, 0.3);
+      z-index: 15;
+    }
+    
+    .video-progress {
+      height: 100%;
+      width: 0;
+      background-color: var(--primary-color);
+      transition: width 0.1s linear;
+    }
+
+    .video-controls .btn-outline-primary {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .video-controls .btn-outline-primary:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .video-controls .btn {
+      padding: 0.25rem 0.5rem;
+      line-height: 1;
+    }
+
+    .card-footer {
+      background-color: var(--primary-light);
+      border-top: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .buy-now-btn-sm {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      padding: 0.375rem 1rem;
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      width: auto;
+      margin-top: 1rem;
+
+    }
+    
+    .buy-now-btn-sm:hover {
+      background-color: var(--primary-dark);
+      border-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+      <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+        <div class="app-brand demo">
+          <a href="index.html" class="app-brand-link">
+            <span class="app-brand-text demo menu-text fw-bold ms-2">HERBIFY</span>
+          </a>
+
+          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm d-flex align-items-center justify-content-center"></i>
+          </a>
+        </div>
+
+        <div class="menu-inner-shadow"></div>
+
+        <ul class="menu-inner py-1">
+          <!-- Dashboards -->
+          <li class="menu-item">
+            <a href="/analyze" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-home-smile"></i>
+              <div class="text-truncate" data-i18n="Dashboards">Skin Survey</div>
+            </a>
+          </li>
+
+          <!-- Layouts -->
+          <li class="menu-item active">
+            <a href="/routine" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-layout"></i>
+              <div class="text-truncate" data-i18n="Layouts">Your Routine</div>
+            </a>
+          </li>
+
+          <!-- Profile Settings -->
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Profile Settings</span>
+          </li>
+          
+          <!-- Pages -->
+          <li class="menu-item">
+            <a href="profile" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-dock-top"></i>
+              <div class="text-truncate" data-i18n="Account">Account Settings</div>
+            </a>
+          </li>
+          
+          <!-- Components -->
+          <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Components</span>
+          </li>
+          
+          <!-- Cards -->
+          <li class="menu-item">
+            <a href="/blog" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-collection"></i>
+              <div class="text-truncate" data-i18n="Basic">Blogs</div>
+            </a>
+          </li>
+          
+          <li class="menu-item">
+            <a href="/progress" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-collection"></i>
+              <div class="text-truncate" data-i18n="Basic">Track Progress</div>
+            </a>
+          </li>
+          
+          <li class="menu-item">
+            <a href="/product" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-collection"></i>
+              <div class="text-truncate" data-i18n="Basic">Products</div>
+            </a>
+          </li>
+          
+          <li class="menu-item">
+            <a href="https://github.com/" target="_blank" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-support"></i>
+              <div class="text-truncate" data-i18n="Support">Support</div>
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <!-- / Menu -->
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+        <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar" style="background: white;">
+          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
+            <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
+              <i class="bx bx-menu bx-md"></i>
+            </a>
+          </div>
+
+          <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+            <b>Your Personalized Skincare Routine</b>
+            <ul class="navbar-nav flex-row align-items-center ms-auto">
+              <!-- User -->
+              <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
+                  <div class="avatar avatar-online">A</div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0 me-3">
+                          <div class="avatar avatar-online">A</div>
+                        </div>
+                        <div class="flex-grow-1">
+                          <h6 class="mb-0">John Doe</h6>
+                          <small class="text-muted">Admin</small>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <div class="dropdown-divider my-1"></div>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      <i class="bx bx-user bx-md me-3"></i><span>My Profile</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      <i class="bx bx-cog bx-md me-3"></i><span>Settings</span>
+                    </a>
+                  </li>
+                  <li>
+                    <div class="dropdown-divider my-1"></div>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="javascript:void(0);">
+                      <i class="bx bx-power-off bx-md me-3"></i><span>Log Out</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <!--/ User -->
+            </ul>
+          </div>
+        </nav>
+        <!-- / Navbar -->
+
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+          <!-- Content -->
+          <div class="container-xxl flex-grow-1 container-p-y">
+            <h4 class="page-title">Your Personalized Skincare Journey</h4>
+            
+            <div class="row equal-height">
+              <!-- Video Tutorial Section -->
+              <div class="col-xl-7 col-lg-7 col-md-12 mb-4">
+                <div class="card video-card">
+                  <div class="video-card-header">
+                    <h5 class="video-card-title">Skincare Tutorial Video</h5>
+                  </div>
+                  <div class="video-container">
+                    <video class="video">
+                      <source src="/uploads/videos/Normal Skin + General .mp4" type="video/mp4">
+                      <source src="upload/v1.ogg" type="video/ogg">
+                      Your browser does not support HTML video.
+                    </video>
+                    <div class="controls">
+                      <button class="play-pause-btn">▶</button>
+                    </div>
+                    <div class="video-progress-container">
+                      <div class="video-progress" id="video-progress"></div>
+                    </div>
+                  </div>
+                  <div class="video-info p-3 bg-light">
+                    <div class="d-flex align-items-center mb-2">
+                      <h6 class="mb-0 me-auto">Video Information</h6>
+                      <div class="video-controls">
+                        <button class="btn btn-sm btn-outline-primary me-1" id="restart-btn" title="Restart"><i class="bx bx-reset"></i></button>
+                        <button class="btn btn-sm btn-outline-primary" id="fullscreen-btn" title="Fullscreen"><i class="bx bx-fullscreen"></i></button>
+                      </div>
+                    </div>
+                    <div class="video-tags mb-2">
+                      <span class="badge bg-primary me-1">Oily Skin</span>
+                      <span class="badge bg-info me-1">Acne-Prone</span>
+                      <span class="badge bg-success">Natural Remedies</span>
+                    </div>
+                    <p class="mb-0 text-muted small">This tutorial demonstrates the best skincare techniques for your specific skin type. Follow along with natural, gentle ingredients that work effectively without harsh chemicals.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Remedies Section -->
+              <div class="col-xl-5 col-lg-5 col-md-12 mb-4">
+                <div class="card remedies-card">
+                  <div class="remedies-card-header">
+                    <h5 class="remedies-card-title">Your Personalized Skincare Routine</h5>
+                  </div>
+                  <div class="card-body p-3">
+                    <div id="skincare-routine">
+                      <!-- Content will be inserted here by JavaScript -->
+                      <div class="loading">Loading your personalized skincare routine...</div>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <a href="/product" class="btn buy-now-btn-sm w-100">Shop Recommended Products</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- / Content -->
+        </div>
+        <!-- / Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+  <!-- / Layout wrapper -->
+
+  <!-- Core JS -->
+  <script src="../assets/vendor/js/bootstrap.js"></script>
+  <script src="../assets/vendor/js/menu.js"></script>
+  <script src="../assets/js/main.js"></script>
+  
+  <script>
+    // Skincare routines data based on skin types
+    const skincareRoutines = {
+      'Oily': {
+        'default': {
+          morning: {
+            cleanser: {
+              primary: "Gentle Neem Cleanser",
+              alternative: "Aloe vera or Mint"
+            },
+            toner: {
+              primary: "Green Tea Toner",
+              alternative: "Hibiscus or Ginger tea"
+            },
+            moisturizer: {
+              primary: "Light Aloe Gel",
+              alternative: "Brahmi or Cucumber"
+            }
+          },
+          night: {
+            cleanser: {
+              primary: "Honey Cleanser",
+              alternative: "Maple Syrup"
+            },
+            moisturizer: {
+              primary: "Jojoba Oil",
+              alternative: "Pure Kumkumadi Oil"
+            }
+          }
+        },
+        'Pimples & Acne': {
+          morning: {
+            cleanser: {
+              primary: "Neem & Tulsi Face Wash",
+              alternative: "Aloe vera or Mint",
+            },
+            toner: {
+              primary: "Green Tea + Witch Hazel",
+              alternative: "White Tea or Tulsi Tea"
+            },
+            moisturizer: {
+              primary: "Aloe Vera + Tea Tree Oil",
+              alternative: "Cucumber Pulp + Lavender Oil"
+            }
+          },
+          night: {
+            cleanser: {
+              primary: "Honey & Lemon Wash",
+              alternative: "Chandana & Vetiver Root"
+            },
+            treatment: {
+              primary: "Sandalwood & Turmeric Paste",
+              alternative: "Multani Mitti & Neem"
+            },
+            moisturizer: {
+              primary: "Jojoba Oil",
+              alternative: "Pure Kumkumadi Oil"
+            }
+          }
+        }
+      },
+      'Dry': {
+        'default': {
+          morning: {
+            cleanser: {
+              primary: "Milk & Honey Cleanser",
+              alternative: "Cream-based Cleanser"
+            },
+            toner: {
+              primary: "Rose Water",
+              alternative: "Chamomile Tea"
+            },
+            serum: {
+              primary: "Hyaluronic Acid Serum",
+              alternative: "Glycerin & Aloe Vera"
+            },
+            moisturizer: {
+              primary: "Shea Butter Cream",
+              alternative: "Coconut Oil & Honey"
+            }
+          },
+          night: {
+            cleanser: {
+              primary: "Oil-based Cleanser",
+              alternative: "Almond Oil"
+            },
+            treatment: {
+              primary: "Avocado & Honey Mask",
+              alternative: "Banana & Yogurt"
+            },
+            moisturizer: {
+              primary: "Rich Night Cream",
+              alternative: "Sesame Oil & Shea Butter"
+            }
+          }
+        }
+      },
+      'Combination': {
+        'default': {
+          morning: {
+            cleanser: {
+              primary: "Balanced pH Cleanser",
+              alternative: "Green Tea Wash"
+            },
+            toner: {
+              primary: "Witch Hazel & Aloe",
+              alternative: "Apple Cider Vinegar (Diluted)"
+            },
+            moisturizer: {
+              primary: "Light Gel-Cream Hybrid",
+              alternative: "Aloe & Jojoba Mix"
+            }
+          },
+          night: {
+            cleanser: {
+              primary: "Gentle Foaming Cleanser",
+              alternative: "Honey & Yogurt"
+            },
+            treatment: {
+              primary: "Clay Mask (T-zone only)",
+              alternative: "Turmeric & Honey"
+            },
+            moisturizer: {
+              primary: "Balanced Night Cream",
+              alternative: "Rosehip Oil (T-zone light, cheeks heavier)"
+            }
+          }
+        }
+      },
+      'Normal': {
+        'default': {
+          morning: {
+            cleanser: {
+              primary: "Gentle Foaming Cleanser",
+              alternative: "Rose Water Wash"
+            },
+            toner: {
+              primary: "Hydrating Toner",
+              alternative: "Cucumber Water"
+            },
+            moisturizer: {
+              primary: "Balanced Moisturizer",
+              alternative: "Light Aloe Cream"
+            }
+          },
+          night: {
+            cleanser: {
+              primary: "Cream Cleanser",
+              alternative: "Honey Face Wash"
+            },
+            treatment: {
+              primary: "Weekly Exfoliation",
+              alternative: "Sugar & Honey Scrub"
+            },
+            moisturizer: {
+              primary: "Nourishing Night Cream",
+              alternative: "Almond Oil"
+            }
+          }
+        }
+      }
+    };
+
+    // Function to toggle alternative products
+    function reportReaction(timing, step) {
+      const alternativeElement = document.getElementById(`${timing}-${step}-alternative`);
+      if (alternativeElement) {
+        alternativeElement.style.display = alternativeElement.style.display === 'none' ? 'block' : 'none';
+      }
+    }
+
+    // Process user skin data and generate appropriate skincare routine
+    function processUserSkinData(userData) {
+      try {
+        const skinType = userData.skinType?.type || 'Normal';
+        const mainConcern = userData.mainConcern?.type || 'default';
+        const confidence = userData.skinType?.confidence || 0;
+
+        const skinTypeRoutines = skincareRoutines[skinType];
+        if (!skinTypeRoutines) {
+          return {
+            error: true,
+            message: 'Skin type not found',
+            routine: null
+          };
+        }
+
+        const routine = skinTypeRoutines[mainConcern] || skinTypeRoutines['default'];
+        
+        return {
+          error: false,
+          skinAnalysis: {
+            type: skinType,
+            confidence: confidence,
+            mainConcern: mainConcern
+          },
+          routine: routine
+        };
+      } catch (error) {
+        console.error('Error processing skin data:', error);
+        return {
+          error: true,
+          message: 'Error processing skin data',
+          routine: null
+        };
+      }
+    }
+
+    // Generate HTML for routine steps
+    function generateRoutineHTML(routine, timing) {
+      return Object.entries(routine).map(([step, product]) => `
+        <div class="step">
+          <strong>${step.charAt(0).toUpperCase() + step.slice(1)}:</strong> ${product.primary}
+          <span class="reaction-link" onclick="reportReaction('${timing}', '${step}')">Had a reaction?</span>
+          <div id="${timing}-${step}-alternative" class="alternative-product">
+            Herbal Alternative: ${product.alternative}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Initialize the page when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // This would normally come from your database
+      const userDataFromDB = {
+        skinType: { type: 'Oily', confidence: 85 },
+        mainConcern: { type: 'Pimples & Acne', severity: 'Moderate' }
+      };
+
+      const result = processUserSkinData(userDataFromDB);
+      const skincareRoutineElement = document.getElementById('skincare-routine');
+      
+      // Update video info based on user's skin type
+      updateVideoInfo(result.skinAnalysis);
+      
+      if (!result.error) {
+        const htmlContent = `
+          <div class="skin-analysis">
+            <h6 class="mb-2">Your Skin Analysis</h6>
+            <p class="mb-1"><strong>Skin Type:</strong> ${result.skinAnalysis.type} (${result.skinAnalysis.confidence}% confidence)</p>
+            <p class="mb-0"><strong>Main Concern:</strong> ${result.skinAnalysis.mainConcern}</p>
+          </div>
+
+          <div class="routine-card morning-routine">
+            <h6 class="routine-title">☀️ Morning Routine</h6>
+            ${generateRoutineHTML(result.routine.morning, 'morning')}
+          </div>
+
+          <div class="routine-card night-routine">
+            <h6 class="routine-title">🌙 Night Routine</h6>
+            ${generateRoutineHTML(result.routine.night, 'night')}
+          </div>
+          
+          <div class="routine-card">
+            <h6 class="routine-title">🌿 Weekly Treatments</h6>
+            <div class="step">
+              <strong>Face Mask:</strong> Multani Mitti & Rose Water
+              <span class="reaction-link" onclick="reportReaction('weekly', 'mask')">Had a reaction?</span>
+              <div id="weekly-mask-alternative" class="alternative-product">
+                Herbal Alternative: Kaolin Clay & Aloe Vera
+              </div>
+            </div>
+            <div class="step">
+              <strong>Exfoliation:</strong> Rice Flour & Honey Scrub
+              <span class="reaction-link" onclick="reportReaction('weekly', 'exfoliation')">Had a reaction?</span>
+              <div id="weekly-exfoliation-alternative" class="alternative-product">
+                Herbal Alternative: Oatmeal & Yogurt Scrub
+              </div>
+            </div>
+          </div>
+          
+          <div class="routine-card">
+            <h6 class="routine-title">💧 Hydration Tips</h6>
+            <div class="step">
+              <strong>Water Intake:</strong> 8-10 glasses daily
+            </div>
+            <div class="step">
+              <strong>Hydrating Foods:</strong> Cucumber, Watermelon, Oranges
+            </div>
+            <div class="step">
+              <strong>Humidity:</strong> Use a humidifier in dry environments
+            </div>
+          </div>
+        `;
+
+        skincareRoutineElement.innerHTML = htmlContent;
+      } else {
+        skincareRoutineElement.innerHTML = `
+          <div class="error-message">
+            ${result.message}
+          </div>
+        `;
+      }
+      
+      // Calculate and set heights
+      setTimeout(() => {
+        matchHeights();
+      }, 100);
+    });
+    
+    // Function to match heights of video and routine sections
+    function matchHeights() {
+      const videoCard = document.querySelector('.video-card');
+      const remediesCard = document.querySelector('.remedies-card');
+      
+      if (videoCard && remediesCard && window.innerWidth >= 768) {
+        const videoHeight = videoCard.offsetHeight;
+        const remediesCardBody = document.querySelector('.remedies-card .card-body');
+        
+        if (remediesCardBody) {
+          const headerHeight = document.querySelector('.remedies-card-header').offsetHeight;
+          const footerHeight = document.querySelector('.card-footer').offsetHeight;
+          const availableHeight = videoHeight - headerHeight - footerHeight - 2; // 2px for borders
+          remediesCardBody.style.height = availableHeight + 'px';
+        }
+      }
+    }
+    
+    // Recalculate on window resize
+    window.addEventListener('resize', () => {
+      matchHeights();
+    });
+
+    // Video player functionality
+    const video = document.querySelector('.video');
+    const playPauseBtn = document.querySelector('.play-pause-btn');
+    const progressBar = document.getElementById('video-progress');
+    let isPlaying = false;
+
+    function togglePlayPause() {
+      if (video) {
+        if (isPlaying) {
+          video.pause();
+          playPauseBtn.textContent = '▶';
+        } else {
+          video.play();
+          playPauseBtn.textContent = '⏸';
+        }
+        isPlaying = !isPlaying;
+      }
+    }
+
+    // Update progress bar as video plays
+    video.addEventListener('timeupdate', function() {
+      if (progressBar && video.duration) {
+        const percentage = (video.currentTime / video.duration) * 100;
+        progressBar.style.width = percentage + '%';
+      }
+    });
+
+    // Add click event to progress bar container to seek
+    const progressContainer = document.querySelector('.video-progress-container');
+    if (progressContainer) {
+      progressContainer.addEventListener('click', function(e) {
+        if (video.duration) {
+          const rect = progressContainer.getBoundingClientRect();
+          const pos = (e.clientX - rect.left) / rect.width;
+          video.currentTime = pos * video.duration;
+        }
+      });
+    }
+
+    // Add click event to play/pause button
+    playPauseBtn.addEventListener('click', togglePlayPause);
+
+    // Reset play button when video ends
+    video.addEventListener('ended', () => {
+      isPlaying = false;
+      playPauseBtn.textContent = '▶';
+      if (progressBar) {
+        progressBar.style.width = '0';
+      }
+    });
+
+    // Add click event to video element itself
+    video.addEventListener('click', togglePlayPause);
+
+    // Function to update video info based on skin type
+    function updateVideoInfo(skinAnalysis) {
+      const videoInfoElement = document.querySelector('.video-info');
+      if (!videoInfoElement) return;
+      
+      const videoTagsElement = videoInfoElement.querySelector('.video-tags');
+      if (videoTagsElement) {
+        // Clear existing tags
+        videoTagsElement.innerHTML = '';
+        
+        // Add skin type tag
+        const skinTypeTag = document.createElement('span');
+        skinTypeTag.className = 'badge bg-primary me-1';
+        skinTypeTag.textContent = `${skinAnalysis.type} Skin`;
+        videoTagsElement.appendChild(skinTypeTag);
+        
+        // Add main concern tag if available
+        if (skinAnalysis.mainConcern && skinAnalysis.mainConcern !== 'default') {
+          const concernTag = document.createElement('span');
+          concernTag.className = 'badge bg-info me-1';
+          concernTag.textContent = skinAnalysis.mainConcern;
+          videoTagsElement.appendChild(concernTag);
+        }
+        
+        // Add a general tag
+        const generalTag = document.createElement('span');
+        generalTag.className = 'badge bg-success';
+        generalTag.textContent = 'Natural Remedies';
+        videoTagsElement.appendChild(generalTag);
+      }
+      
+      // Update description
+      const descriptionElement = videoInfoElement.querySelector('p');
+      if (descriptionElement) {
+        descriptionElement.textContent = `This tutorial is tailored for ${skinAnalysis.type.toLowerCase()} skin` + 
+          (skinAnalysis.mainConcern && skinAnalysis.mainConcern !== 'default' ? 
+          ` with ${skinAnalysis.mainConcern.toLowerCase()} concerns` : '') + 
+          `. Follow along with natural ingredients that work effectively without harsh chemicals.`;
+      }
+    }
+
+    // Restart and fullscreen button functionality
+    const restartBtn = document.getElementById('restart-btn');
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    
+    if (restartBtn) {
+      restartBtn.addEventListener('click', function() {
+        if (video) {
+          video.currentTime = 0;
+          if (!isPlaying) {
+            video.play();
+            playPauseBtn.textContent = '⏸';
+            isPlaying = true;
+          }
+        }
+      });
+    }
+    
+    if (fullscreenBtn) {
+      fullscreenBtn.addEventListener('click', function() {
+        if (video) {
+          if (video.requestFullscreen) {
+            video.requestFullscreen();
+          } else if (video.webkitRequestFullscreen) { /* Safari */
+            video.webkitRequestFullscreen();
+          } else if (video.msRequestFullscreen) { /* IE11 */
+            video.msRequestFullscreen();
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
